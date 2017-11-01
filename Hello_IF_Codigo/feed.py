@@ -14,7 +14,7 @@ def inserir_dados_feed():
 
         cursor.execute("""
         INSERT INTO tb_publicacao (visib_mens)
-        VALUES ('?','?','?') """, (visib_mens))
+        VALUES (?,?,?) """, (visib_mens))
 
         # Salvando...
         conn.commit()
