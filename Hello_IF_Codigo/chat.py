@@ -13,7 +13,7 @@ def inserir_dados_chat():
 
         cursor.execute("""
         INSERT INTO tb_chat (visib_mens)
-        VALUES ('?','?','?') """, (visib_mens))
+        VALUES (?,?,?) """, (visib_mens))
 
         # Salvando...
         conn.commit()
