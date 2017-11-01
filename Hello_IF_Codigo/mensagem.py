@@ -16,7 +16,7 @@ def inserir_dados_mensagem():
 
         cursor.execute("""
         INSERT INTO tb_mensagem (visibilidade, texto, assunto)
-        VALUES ('?','?','?') """, (visibilidade, texto, assunto))
+        VALUES (?,?,?) """, (visibilidade, texto, assunto))
 
         # Salvando...
         conn.commit()
