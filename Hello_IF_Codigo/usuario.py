@@ -24,7 +24,7 @@ def inserir_dados_usuario():
 
         cursor.execute("""
         INSERT INTO tb_usuario (senha, login, logado, nome, data_nasc, genero, profissao)
-        VALUES ('?','?','?','?','?','?','?') """, (senha, login, logado, nome, data_nasc, genero, profissao))
+        VALUES (?,?,?,?,?,?,?) """, (senha, login, logado, nome, data_nasc, genero, profissao))
 
         # Salvando...
         conn.commit()
@@ -40,7 +40,7 @@ def inserir_lista_usuario():
         lista = input("Digite uma lista tipo:[()]: ")
         cursor.executemany("""
         INSERT INTO tb_usuario (senha, login, logado, nome, data_nasc, genero, profissao)
-        VALUES ('?','?','?','?','?','?','?') """, lista)
+        VALUES (?,?,?,?,?,?,?) """, lista)
 
         # Salvando...
         conn.commit()
