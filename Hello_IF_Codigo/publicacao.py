@@ -14,7 +14,7 @@ def inserir_dados_publicacao():
 
         cursor.execute("""
         INSERT INTO tb_publicacao (tipo)
-        VALUES ('?','?','?') """, (tipo))
+        VALUES (?,?,?) """, (tipo))
 
         # Salvando...
         conn.commit()
