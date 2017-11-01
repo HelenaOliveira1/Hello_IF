@@ -30,4 +30,46 @@ def inserir_dados_amigo():
         print("Ocorreu um ERRO!")
         return False
 
+import sqlite3
 
+conn = sqlite3.connect('hello_if.db')
+
+cursor = conn.cursor()
+
+def lendo_imprimindo_todos_amigos():
+    cursor.execute("""
+    SELECT * FROM tb_amigos;
+    """)
+
+    for linha in cursor.fetchall():
+        print(linha)
+
+    # Salvando...
+    conn.commit()
+    print("Lemos com sucesso.")
+
+def alterar_dados_amigos():
+    try:
+        # Salvando...
+        conn.commit()
+        print("Registro alterado com sucesso.")
+
+    except sqlite3.Error:
+        print("Ocorreu um ERRO!")
+        return False
+
+def deletar_dados_amigos():
+    try:
+        login_usuario = int(input("Digite o login do usuario para remover: "))
+        cursor.execute("""
+            DELETE FROM tb_amigo
+            WHERE id_usuario_amigo = ?
+            """, (login_usuario))
+
+        # Salvando...
+        conn.commit()
+        print("Registro deletado com sucesso.")
+
+    except sqlite3.Error:
+        print("Ocorreu um ERRO!")
+        return False
