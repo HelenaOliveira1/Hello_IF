@@ -12,7 +12,7 @@ def inserir_dados_chat():
         visib_mens = str(input("Digite tipo da publicação: "))
 
         cursor.execute("""
-        INSERT INTO tb_publicacao (visib_mens)
+        INSERT INTO tb_chat (visib_mens)
         VALUES ('?','?','?') """, (visib_mens))
 
         # Salvando...
