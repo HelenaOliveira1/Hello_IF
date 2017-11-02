@@ -1,0 +1,3 @@
+"""
+    Amigo Orientado a Objeto
+"""
