@@ -19,7 +19,6 @@ class Feed():
     def listar(self):
 
         publicacoes = []
-
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
 
@@ -40,7 +39,6 @@ class Feed():
 
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
-
         cursor.execute('''
             #INSERT INTO tb_feed(id, id_usuario, visib_mens) VALUES (self.id, self.usuario.id_u, self.mensagem.visibilidade)
         ''')
@@ -48,8 +46,25 @@ class Feed():
         conn.commit()
         conn.close()
 
-    def deletar(self):
-        pass
+     def deletar(self, login_delt):
 
-    def atualizar(self):
-        pass
+        conn = sqlite3.connect("hello_if.db")
+        cursor.execute('''
+            DELETE FROM tb_publicacao
+            WHERE login =?        
+            ''', login_delt)
+
+        conn.comimit()
+        conn.close()
+
+  def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao):
+        conn = sqlite3.connect("hello_if.db")
+        cursor.execute('''
+            UPDATE tb_usuario
+            SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
+            WHERE login=?
+            ''', nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao,self.login)
+
+        conn.comimit()
+        conn.close()
+        
