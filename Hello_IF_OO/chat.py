@@ -9,7 +9,6 @@ import sqlite3
 conn = sqlite3.connect("hello_if.db")
 cursor = conn.cursor()
 
-
 class Chat():
     def __init__(self, id, id_u, senha_u, login_u, logado_u, nome_u, data_nasc_u, genero_u, profissao_u, id_a, senha_a,
                  login_a, logado_a, nome_a, data_nasc_a, genero_a, profissao_a, id_m, visibilidade, texto):
@@ -39,9 +38,9 @@ class Chat():
         return mensagens
 
     def inserir(self):
+        
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
-
         cursor.execute('''
             #INSERT INTO tb_mensagem(id, id_usuario, visib_mens, id_usuario_amigo) VALUES (self.id, self.usuario.id_u, self.mensagem.visibilidade, self.amigo.id_a)
         ''')
@@ -49,8 +48,25 @@ class Chat():
         conn.commit()
         conn.close()
 
-    def deletar(self):
-        pass
+     def deletar(self, login_delt):
 
-    def atualizar(self):
-        pass
+        conn = sqlite3.connect("hello_if.db")
+        cursor.execute('''
+            DELETE FROM tb_publicacao
+            WHERE login =?        
+            ''', login_delt)
+
+        conn.comimit()
+        conn.close()
+
+  def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao):
+        conn = sqlite3.connect("hello_if.db")
+        cursor.execute('''
+            UPDATE tb_usuario
+            SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
+            WHERE login=?
+            ''', nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao,self.login)
+
+        conn.comimit()
+        conn.close()
+        
