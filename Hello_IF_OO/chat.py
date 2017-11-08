@@ -58,15 +58,3 @@ class Chat():
 
         conn.commit()
         conn.close()
-
-  def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao, login):
-        conn = sqlite3.connect("hello_if.db")
-        cursor.execute('''
-            UPDATE tb_chat
-            SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
-            WHERE login=?
-            ''', (nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao,login))
-
-        conn.commit()
-        conn.close()
-        
