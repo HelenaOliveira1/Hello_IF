@@ -49,20 +49,20 @@ class Amigo():
 
         conn = sqlite3.connect("hello_if.db")
         cursor.execute('''
-            DELETE FROM tb_publicacao
+            DELETE FROM tb_amigo
             WHERE login =?        
             ''', login_delt)
 
-        conn.comimit()
+        conn.commit()
         conn.close()
 
-  def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao):
+  def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao, login):
         conn = sqlite3.connect("hello_if.db")
         cursor.execute('''
-            UPDATE tb_usuario
+            UPDATE tb_amigo
             SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
             WHERE login=?
-            ''', nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao,self.login)
+            ''', (nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao,login))
 
-        conn.comimit()
+        conn.commit()
         conn.close()
