@@ -54,11 +54,27 @@ class Usuario():
         conn.commit()
         conn.close()
 
-    def deletar(self):
-        pass
+    def deletar(self, login_delt):
+        
+        conn = sqlite3.connect("hello_if.db")
+        cursor.execute('''
+            DELETE FROM tb_usuario
+            WHERE login =?        
+        ''', login_delt)
 
-    def atualizar(self):
-        pass
+        conn.comimit()
+        conn.close()
+
+    def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao):
+        conn = sqlite3.connect("hello_if.db")
+        cursor.execute('''
+            UPDATE tb_usuario
+            SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
+            Where login=?
+        ''', nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao, self.login)
+
+        conn.comimit()
+        conn.close()
 
     def realizarBusca(self):
         pass
