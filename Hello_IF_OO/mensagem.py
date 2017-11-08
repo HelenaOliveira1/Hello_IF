@@ -44,24 +44,13 @@ class Mensagem():
         conn.commit()
         conn.close()
 
-     def deletar(self, login_delt):
+     def deletar(self, visib_mens):
 
         conn = sqlite3.connect("hello_if.db")
         cursor.execute('''
-            DELETE FROM tb_publicacao
-            WHERE login =?        
-            ''', login_delt)
+            DELETE FROM tb_mensagem
+            WHERE visib_mens =?        
+            ''', visib_mens)
 
-        conn.comimit()
-        conn.close()
-
-  def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao):
-        conn = sqlite3.connect("hello_if.db")
-        cursor.execute('''
-            UPDATE tb_usuario
-            SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
-            WHERE login=?
-            ''', nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao,self.login)
-
-        conn.comimit()
+        conn.commit()
         conn.close()
