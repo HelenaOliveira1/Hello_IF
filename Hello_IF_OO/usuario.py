@@ -52,11 +52,16 @@ class Usuario():
         ''')
 
         conn.commit()
+        id = cursor.lastrowid
         conn.close()
+        
+        return id
 
     def deletar(self, login_delt):
         
         conn = sqlite3.connect("hello_if.db")
+        cursor = conn.cursor()
+        
         cursor.execute('''
             DELETE FROM tb_usuario
             WHERE login =?        
@@ -66,7 +71,10 @@ class Usuario():
         conn.close()
 
     def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao):
+        
         conn = sqlite3.connect("hello_if.db")
+        cursor = conn.cursor()
+        
         cursor.execute('''
             UPDATE tb_usuario
             SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
@@ -76,9 +84,16 @@ class Usuario():
         conn.commit()
         conn.close()
 
-    def realizarBusca(self):
-        pass
-
+    def realizarBusca(self, nome):
+        
+        conn = sqlite3.connect("hello_if.db")
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            SELECT * FROM tb_usuario
+            WHERE nome LIKE '%?%'
+        ''', (nome))
+        
     def postPubPrivada(self):
         pass
 
