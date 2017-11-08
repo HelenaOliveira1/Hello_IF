@@ -8,7 +8,6 @@ conn = sqlite3.connect("hello_if.db")
 cursor = conn.cursor()
 
 class Publicacao():
-
     def __init__(self, id, tipo):
         self.id = id
         self.tipo = tipo
@@ -42,8 +41,24 @@ class Publicacao():
         conn.commit()
         conn.close()
 
-    def deletar(self):
-        pass
+    def deletar(self, login_delt):
 
-    def atualizar(self):
-        pass
+        conn = sqlite3.connect("hello_if.db")
+        cursor.execute('''
+            DELETE FROM tb_publicacao
+            WHERE login =?        
+            ''', login_delt)
+
+        conn.comimit()
+        conn.close()
+
+  def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao):
+        conn = sqlite3.connect("hello_if.db")
+        cursor.execute('''
+            UPDATE tb_usuario
+            SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
+            Where login=?
+            ''', nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao,self.login)
+
+        conn.comimit()
+        conn.close()
