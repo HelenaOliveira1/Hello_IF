@@ -42,11 +42,15 @@ class Mensagem():
         ''')
 
         conn.commit()
+        id = cursor.lastrowid
         conn.close()
+        
+        return id
 
      def deletar(self, visib_mens):
 
         conn = sqlite3.connect("hello_if.db")
+        cursor = conn.cursor()
         cursor.execute('''
             DELETE FROM tb_mensagem
             WHERE visib_mens =?        
