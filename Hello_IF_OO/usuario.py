@@ -79,7 +79,7 @@ class Usuario():
             UPDATE tb_usuario
             SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
             WHERE login=?
-        ''', nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao, self.login)
+        ''', (nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao, self.login))
 
         conn.commit()
         conn.close()
