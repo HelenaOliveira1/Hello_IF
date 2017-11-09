@@ -22,7 +22,7 @@ class Amigo():
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
         cursor.execute('''
-            #SELECT * FROM tb_amigo;
+            SELECT * FROM tb_amigo;
         ''')
         for linha in cursor.fechall():
             usuario = linha[1]
@@ -39,15 +39,19 @@ class Amigo():
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
         cursor.execute('''
-            #INSERT INTO tb_amigo(id, id_usuario, id_usuario_amigo) VALUES (self.id, self.usuario.id_u, self.amigo.id_a)
+            INSERT INTO tb_amigo(id, id_usuario, id_usuario_amigo) VALUES (self.id, self.usuario.id_u, self.amigo.id_a)
         ''')
 
         conn.commit()
+        id = cursor.lastrowid
         conn.close()
+        
+        return id
 
      def deletar(self, login_delt):
 
         conn = sqlite3.connect("hello_if.db")
+        cursor = conn.cursor()
         cursor.execute('''
             DELETE FROM tb_amigo
             WHERE login =?        
