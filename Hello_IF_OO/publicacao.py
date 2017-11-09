@@ -39,7 +39,10 @@ class Publicacao():
         ''')
 
         conn.commit()
+        id = cursor.lastrowid
         conn.close()
+        
+        return id
 
     def deletar(self, visib_mens):
 
