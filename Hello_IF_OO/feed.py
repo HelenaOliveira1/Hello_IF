@@ -44,11 +44,15 @@ class Feed():
         ''')
 
         conn.commit()
+        id = cursor.lastrowid
         conn.close()
+        
+        return id
 
      def deletar(self, visib_mensagem):
 
         conn = sqlite3.connect("hello_if.db")
+        cursor = conn.cursor()
         cursor.execute('''
             DELETE FROM tb_feed
             WHERE visib_mens =?        
@@ -59,6 +63,7 @@ class Feed():
 
   def atualizar(self, visib_mens):
         conn = sqlite3.connect("hello_if.db")
+        cursor = conn.cursor()
         cursor.execute('''
             UPDATE tb_feed
             SET visib_mens=?
