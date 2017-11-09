@@ -44,6 +44,7 @@ class Publicacao():
     def deletar(self, visib_mens):
 
         conn = sqlite3.connect("hello_if.db")
+        cursor = conn.cursor()
         cursor.execute('''
             DELETE FROM tb_publicacao
             WHERE visib_mens =?        
