@@ -57,15 +57,15 @@ class Usuario():
         
         return id
 
-    def deletar(self, login_delt):
+    def deletar(self, id_delt):
         
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
         
         cursor.execute('''
             DELETE FROM tb_usuario
-            WHERE login =?        
-        ''', login_delt)
+            WHERE id =?
+        ''', id_delt)
 
         conn.commit()
         conn.close()
@@ -78,8 +78,9 @@ class Usuario():
         cursor.execute('''
             UPDATE tb_usuario
             SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
-            WHERE login=?
-        ''', (nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao, self.login))
+            VALUES (?,?,?,?,?,?,?)
+            WHERE id=?
+        ''', (nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao, self.id))
 
         conn.commit()
         conn.close()

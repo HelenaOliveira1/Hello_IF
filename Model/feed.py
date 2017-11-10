@@ -2,9 +2,9 @@
     Feed Orientado a Objeto
 """
 
-from Hello_IF_OO.mensagem import Mensagem
-from Hello_IF_OO.usuario import Usuario
 import sqlite3
+from Model.usuario import Usuario
+from Model.mensagem import Mensagem
 
 conn = sqlite3.connect("hello_if.db")
 cursor = conn.cursor()
@@ -49,19 +49,20 @@ class Feed():
         
         return id
 
-     def deletar(self, visib_mensagem):
+    def deletar(self, id_mensagem):
 
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
         cursor.execute('''
             DELETE FROM tb_feed
-            WHERE visib_mens =?        
-            ''', visib_mensagem)
+            WHERE id =?
+            ''', id_mensagem)
 
         conn.commit()
         conn.close()
 
-  def atualizar(self, visib_mens):
+    def atualizar(self, visib_mens):
+
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
         cursor.execute('''
@@ -72,4 +73,3 @@ class Feed():
 
         conn.commit()
         conn.close()
-        

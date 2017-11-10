@@ -1,5 +1,5 @@
 """
-    Mensagem Orientado a Objeto
+    Publicação Orientado a Objeto
 """
 
 import sqlite3
@@ -7,38 +7,35 @@ import sqlite3
 conn = sqlite3.connect("hello_if.db")
 cursor = conn.cursor()
 
-class Mensagem():
-
-    def __init__(self, id, visibilidade, texto):
+class Publicacao():
+    def __init__(self, id, tipo):
         self.id = id
-        self.visibilidade = visibilidade
-        self.texto = texto
+        self.tipo = tipo
 
     def listar(self):
-        mensagens = []
+        publicacoes = []
 
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
 
         cursor.execute('''
-            SELECT * FROM tb_mensagem;
+            SELECT * FROM tb_publicacao;
         ''')
         for linha in cursor.fechall():
-            visibilidade = linha[1]
-            texto = linha[2]
-            mensagem = Mensagem(visibilidade, texto)
-            mensagens.append(mensagem)
+            tipo = linha[1]
+            publicacao = Publicacao(tipo)
+            publicacoes.append(publicacao)
 
         conn.close()
 
-        return mensagens
+        return publicacoes
 
     def inserir(self):
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
 
         cursor.execute('''
-            INSERT INTO tb_mensagem(visibilidade, texto) VALUES (self.visibilidade, self.texto)
+            INSERT INTO tb_publicacao(tipo) VALUES (self.tipo)
         ''')
 
         conn.commit()
@@ -47,14 +44,14 @@ class Mensagem():
         
         return id
 
-     def deletar(self, visib_mens):
+    def deletar(self, id_mens):
 
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
         cursor.execute('''
-            DELETE FROM tb_mensagem
-            WHERE visib_mens =?        
-            ''', visib_mens)
+            DELETE FROM tb_publicacao
+            WHERE id =?
+            ''', (id_mens))
 
         conn.commit()
         conn.close()
