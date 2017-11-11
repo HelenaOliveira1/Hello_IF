@@ -23,7 +23,7 @@ def ADDamigo():
         print("Tudo certo nada errado... Até agora.")
 
     except sqlite3.Error:
-        print("Ocorreu um ERRO!...ligue novamente mais tarde.")
+        print("Ocorreu um ERRO!...tente novamente mais tarde.")
         return False
 
 def inserir_dados_amigo():
