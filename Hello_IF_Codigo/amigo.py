@@ -7,25 +7,6 @@ import sqlite3
 conn = sqlite3.connect('hello_if.db')
 cursor = conn.cursor()
 
-def ADDamigo():
-    
-        # Tratado os possiveis erros, se acontecer.
-    try:
-        nome = input("Digite seu nome completo: ")
-        sql = ('''
-            INSERT INTO tb_amigo
-                VALUES amigo''', (nome))
-
-        cursor.execute(sql)
-
-        # Salvando no Banco de Dados
-        conn.commit()
-        print("Tudo certo nada errado... Até agora.")
-
-    except sqlite3.Error:
-        print("Ocorreu um ERRO!...tente novamente mais tarde.")
-        return False
-
 def inserir_dados_amigo():
     
        # Tratado os possiveis erros, se acontecer.
