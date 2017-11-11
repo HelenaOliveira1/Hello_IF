@@ -75,7 +75,23 @@ def main(Args = []):
                 op2 = int(input("Menu:\n 1- Criar usuário\n 2- Adicionar Amigo\n 3- Sair\n:"))
 
             elif (op2 == 2):
-                print("Adicionar Amigo")
+    
+        # Tratado os possiveis erros, se acontecer.
+    try:
+        nome = input("Digite seu nome completo: ")
+        sql = ('''
+            INSERT INTO tb_amigo
+                VALUES amigo''', (nome))
+
+        cursor.execute(sql)
+
+        # Salvando no Banco de Dados
+        conn.commit()
+        print("Tudo certo nada errado... Até agora.")
+
+    except sqlite3.Error:
+        print("Ocorreu um ERRO!...tente novamente mais tarde.")
+        return False
                 op2 = int(input("Menu:\n 1- Criar usuário\n 2- Adicionar Amigo\n 3- Sair\n:"))
 
             elif (op2 == 3):
