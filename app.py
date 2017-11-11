@@ -76,22 +76,24 @@ def main(Args = []):
 
             elif (op2 == 2):
     
-        # Tratado os possiveis erros, se acontecer.
-    try:
-        nome = input("Digite seu nome completo: ")
-        sql = ('''
-            INSERT INTO tb_amigo
-                VALUES amigo''', (nome))
+                # Tratado os possiveis erros, se acontecer.
+                try:
+                    nome = input("Digite nome do amigo: ")
+                    sql = ("""
+                        SELECT * FROM tb_amigo
+                        WHERE nome LIKE nome=?""", (nome))
 
-        cursor.execute(sql)
+                    cursor.execute(sql)
 
-        # Salvando no Banco de Dados
-        conn.commit()
-        print("Tudo certo nada errado... Até agora.")
+                    # Salvando no Banco de Dados
+                    conn.commit()
+                    print("Tudo certo nada errado... Até agora.")
 
-    except sqlite3.Error:
-        print("Ocorreu um ERRO!...tente novamente mais tarde.")
-        return False
+                except sqlite3.Error:
+
+                    print("Ocorreu um ERRO!...tente novamente mais tarde.")
+                    return False
+
                 op2 = int(input("Menu:\n 1- Criar usuário\n 2- Adicionar Amigo\n 3- Sair\n:"))
 
             elif (op2 == 3):
@@ -101,7 +103,6 @@ def main(Args = []):
 
     elif (op == 2):
         print("Saindo...")
-        conn.close()
 
 if (__name__== '__main__'):
     main()
