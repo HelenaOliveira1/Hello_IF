@@ -29,10 +29,10 @@ print("Tabela tb_usuario criada com sucesso.")
 cursor.execute("""
     CREATE TABLE tb_amigo (
     	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	id_usuario INTEGER NOT NULL,
-	id_usuario_amigo INTEGER NOT NULL,
-	foreign key (id_usuario) references tb_usuario(id),
-	foreign key (id_usuario_amigo) references tb_usuario(id));
+	    id_usuario INTEGER NOT NULL,
+	    id_usuario_amigo INTEGER NOT NULL,
+	    foreign key (id_usuario) references tb_usuario(id),
+	    foreign key (id_usuario_amigo) references tb_usuario(id));
 	""")
 
 print("Tabela tb_amigo criada com sucesso.")
@@ -40,9 +40,9 @@ print("Tabela tb_amigo criada com sucesso.")
 cursor.execute("""
     CREATE TABLE tb_mensagem (
     	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	visibilidade VARCHAR(10),
-	texto TEXT,
-	assunto TEXT);
+	    visibilidade VARCHAR(10),
+	    texto TEXT,
+	    assunto TEXT);
 	""")
 
 print("Tabela tb_mensagem criada com sucesso.")
@@ -50,10 +50,10 @@ print("Tabela tb_mensagem criada com sucesso.")
 cursor.execute("""
     CREATE TABLE tb_feed (
     	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	id_usuario INTEGER NOT NULL,
-	visib_mens VARCHAR(10),
-	foreign key (id_usuario) references tb_usuario(id),
-	foreign key (visib_mens) references tb_mensagem(visibilidade));
+	    id_usuario INTEGER NOT NULL,
+	    visib_mens VARCHAR(10),
+	    foreign key (id_usuario) references tb_usuario(id),
+	    foreign key (visib_mens) references tb_mensagem(visibilidade));
 	""")
 
 print("Tabela tb_feed criada com sucesso.")
@@ -61,12 +61,12 @@ print("Tabela tb_feed criada com sucesso.")
 cursor.execute("""
     CREATE TABLE tb_chat (
     	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	id_usuario INTEGER NOT NULL,
-	visib_mens VARCHAR(10),
-	id_usuario_amigo INTEGER,
-	foreign key (id_usuario) references tb_usuario(id),
-	foreign key (visib_mens) references tb_mensagem(visibilidade),
-	foreign key (id_usuario_amigo) references tb_usuario(id));
+	    id_usuario INTEGER NOT NULL,
+	    visib_mens VARCHAR(10),
+	    id_usuario_amigo INTEGER,
+	    foreign key (id_usuario) references tb_usuario(id),
+	    foreign key (visib_mens) references tb_mensagem(visibilidade),
+	    foreign key (id_usuario_amigo) references tb_usuario(id));
 	""")
 
 print("Tabela tb_chat criada com sucesso.")

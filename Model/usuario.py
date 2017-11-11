@@ -4,7 +4,7 @@
 
 import sqlite3
 
-conn = sqlite3.connect("hello_if.db")
+conn = sqlite3.connect(':memory:')
 cursor = conn.cursor()
 
 class Usuario():
@@ -22,7 +22,7 @@ class Usuario():
     def listar(self):
         usuarios = []
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = sqlite3.connect(':memory:')
         cursor = conn.cursor()
 
         cursor.execute('''
@@ -44,11 +44,11 @@ class Usuario():
         return usuarios
 
     def inserir(self):
-        conn = sqlite3.connect("hello_if.db")
+        conn = sqlite3.connect(':memory:')
         cursor = conn.cursor()
 
         cursor.execute('''
-            INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao) VALUES (self.senha, self.login, self.logado,self.nome,self.data_nasc,self.genero,self.profissao)
+            INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao) VALUES (senha, login, logado,nome,data_nasc,genero,profissao)
         ''')
 
         conn.commit()
@@ -59,7 +59,7 @@ class Usuario():
 
     def deletar(self, id_delt):
         
-        conn = sqlite3.connect("hello_if.db")
+        conn = sqlite3.connect(':memory:')
         cursor = conn.cursor()
         
         cursor.execute('''
@@ -72,7 +72,7 @@ class Usuario():
 
     def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao):
         
-        conn = sqlite3.connect("hello_if.db")
+        conn = sqlite3.connect(':memory:')
         cursor = conn.cursor()
         
         cursor.execute('''
@@ -87,7 +87,7 @@ class Usuario():
 
     def realizarBusca(self, nome):
         
-        conn = sqlite3.connect("hello_if.db")
+        conn = sqlite3.connect(':memory:')
         cursor = conn.cursor()
         
         cursor.execute('''
