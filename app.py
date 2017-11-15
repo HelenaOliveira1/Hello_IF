@@ -47,7 +47,7 @@ def main(Args = []):
 
         print("Sua rede social '%s' foi criada com sucesso!" %nome)
 
-        op2 = int(input("==========  MENU  ==========\n1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Sair\n"))
+        op2 = int(input("==========  MENU  ==========\n1 - Criar usuário\n 2 - Adicionar Amigo\n 4 - Desfazer Amizade\n 5 - Realizar Busca\n 0 - Sair\n"))
         cond = True
 
         while (cond):
@@ -75,7 +75,7 @@ def main(Args = []):
 
                 conn.commit()
                 print("Criado com sucesso!")
-                op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Sair\n"))
+                op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Desfazer Amizade\n 5 - Realizar Busca\n 0 - Sair\n"))
 
             elif (op2 == 2):
     
@@ -98,12 +98,19 @@ def main(Args = []):
                     print("Ocorreu um ERRO!...tente novamente mais tarde.")
                     return False
 
-                op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Sair\n"))
+                op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Desfazer Amizade\n 5 - Realizar Busca\n 0 - Sair\n"))
                 
             elif (op2 == 3):
-                enviarDM()
-
+                usuario.enviarDM()
+                
             elif (op2 == 4):
+                usuario.desfazerAmizade()
+                
+            elif (op2 == 5):
+                nome = str(input("Digite o nome do amigo: "))
+                usuario.realizarBusca(nome)
+
+            elif (op2 == 0):
                 print("Saindo...\nOBS.: Todos os dados serão perdidos.")
                 cond = False
                 conn.close()
