@@ -136,7 +136,7 @@ class Usuario():
     cursor = conn.cursor()
 
     cursor.execute('''
-            ALTER TABLE tb_amigo
+            DELETE FROM tb_amigo
             WHERE nome =?
         ''', (nome_amigo))
 
