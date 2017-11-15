@@ -95,6 +95,9 @@ class Usuario():
             WHERE nome LIKE '%?%'
         ''', (nome))
         
+        conn.commit()
+        conn.close()
+        
     def postPubPrivada(self):
         pass
 
@@ -125,11 +128,23 @@ class Usuario():
         conn.commit()
         conn.close()
         
-    def desfazerAmizade(self):
-        pass
+    def desfazerAmizade(self, nome_amigo):
+
+    nome_amigo = str(input("Digite o nome do seu amigo que deseja desfazer amizade:"))
+    
+    conn = sqlite3.connect(':memory:')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+            ALTER TABLE tb_amigo
+            WHERE nome =?
+        ''', (nome_amigo))
+
+        conn.commit()
+        conn.close()
 
     def fazerAmigo(self):
         pass
 
     def comemorarTempoAmizade(self):
-        pass
+        pass 
