@@ -7,6 +7,7 @@ def main(Args = []):
     from random import *
     import datetime
     from Model.usuario import Usuario
+    from Model.amigo import Amigo
 
     print("==========   Bem vindo a nossa Rede Social!   ==========")
     op = int(input("==========  MENU  ==========\n 1 - Criar outra Rede Social\n 2 - Sair\n"))
@@ -88,6 +89,8 @@ def main(Args = []):
                         """, (nome))
 
                     cursor.execute(sql)
+                    
+                    amigo.inserir()
 
                     # Salvando no Banco de Dados
                     conn.commit()
