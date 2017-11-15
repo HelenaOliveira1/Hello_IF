@@ -101,9 +101,30 @@ class Usuario():
     def postPubPublica(self):
         pass
 
-    def enviarDM(self):
-        pass
-
+    def enviarDM(self): #Envio de mensagem
+        
+        conn = sqlite3.connect(':memory:')
+        cursor = conn.cursor()
+        
+        texto = str(input("Digite o texto para ser enviado: "))
+        usuario = str(input("Digite o nome do destinatário da mensagem: "))
+        
+        cursor.execute('''
+            SELECT nome FROM tb_usuario
+            WHERE nome=?
+        ''', (usuario))
+        
+        #Enviando mensagem...
+        cursor.execute('''
+           UPDATE tb_mensagem
+           SET texto=?
+        ''', (texto))
+        
+        print("Mensagem enviada com sucesso.")
+        
+        conn.commit()
+        conn.close()
+        
     def desfazerAmizade(self):
         pass
 
