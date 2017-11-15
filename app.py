@@ -72,7 +72,7 @@ def main(Args = []):
 
                 conn.commit()
                 print("Criado com sucesso!")
-                op2 = int(input("Menu:\n 1- Criar usuário\n 2- Adicionar Amigo\n 3- Sair\n:"))
+                op2 = int(input("Menu:\n 1- Criar usuário\n 2- Adicionar Amigo\n 3- Enviar mensagem\n 4- Sair\n:"))
 
             elif (op2 == 2):
     
@@ -95,8 +95,11 @@ def main(Args = []):
                     return False
 
                 op2 = int(input("Menu:\n 1- Criar usuário\n 2- Adicionar Amigo\n 3- Sair\n:"))
-
+                
             elif (op2 == 3):
+                enviarDM()
+
+            elif (op2 == 4):
                 print("Saindo...\nOBS.: Todos os dados serão perdidos.")
                 cond = False
                 conn.close()
