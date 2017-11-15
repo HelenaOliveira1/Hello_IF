@@ -128,7 +128,7 @@ class Usuario():
         conn.commit()
         conn.close()
         
-    def desfazerAmizade(self, nome_amigo):
+    def desfazerAmizade(self):
 
     nome_amigo = str(input("Digite o nome do seu amigo que deseja desfazer amizade:"))
     
