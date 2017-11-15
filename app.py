@@ -8,18 +8,20 @@ def main(Args = []):
     import datetime
     from Model.usuario import Usuario
 
-    print("Bem vindo a nossa Rede Social!")
-    op = int(input("Menu:\n 1- Criar outra Rede Social\n 2- Sair\n:"))
+    print("==========   Bem vindo a nossa Rede Social!   ==========")
+    op = int(input("==========  MENU  ==========\n 1 - Criar outra Rede Social\n 2 - Sair\n"))
 
     while (op != 1 and op != 2):
         print ("Opção não existe.")
-        op = int(input("Menu:\n 1- Criar Rede Social\n 2- Sair\n:"))
+        op = int(input("==========  MENU  ==========\n 1 - Criar outra Rede Social\n 2 - Sair\n"))
 
     if (op == 1):
 
         nome = str(input("Digite o nome da sua rede social: "))
+        
         conn = sqlite3.connect(':memory:')
         cursor = conn.cursor()
+        
         cursor.execute("""
         CREATE TABLE tb_usuario (
     	    id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,6 +33,7 @@ def main(Args = []):
     	    genero VARCHAR(10),
     	    profissao VARCHAR(20));
     	    """)
+        
         cursor.execute("""
         CREATE TABLE tb_amigo (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,13 +47,14 @@ def main(Args = []):
 
         print("Sua rede social '%s' foi criada com sucesso!" %nome)
 
-        op2 = int(input("Menu:\n 1- Criar usuário\n 2- Adicionar Amigo\n 3- Sair\n:"))
+        op2 = int(input("==========  MENU  ==========\n1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Sair\n"))
         cond = True
 
         while (cond):
             while (op2 != 1 and op2 != 2 and op2 != 3):
                 print("Opção não existe.")
-                op2 = int(input("Menu:\n 1- Criar usuário\n 2- Adicionar Amigo\n 3- Sair\n:"))
+                op2 = int(input("==========  MENU  ==========\n1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Sair\n"))
+
 
             if (op2 == 1):
 
@@ -72,7 +76,7 @@ def main(Args = []):
 
                 conn.commit()
                 print("Criado com sucesso!")
-                op2 = int(input("Menu:\n 1- Criar usuário\n 2- Adicionar Amigo\n 3- Enviar mensagem\n 4- Sair\n:"))
+                op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Sair\n"))
 
             elif (op2 == 2):
     
@@ -81,7 +85,8 @@ def main(Args = []):
                     nome = input("Digite nome do amigo: ")
                     sql = ("""
                         SELECT * FROM tb_amigo
-                        WHERE nome LIKE nome=?""", (nome))
+                        WHERE nome LIKE nome=?
+                        """, (nome))
 
                     cursor.execute(sql)
 
@@ -94,7 +99,7 @@ def main(Args = []):
                     print("Ocorreu um ERRO!...tente novamente mais tarde.")
                     return False
 
-                op2 = int(input("Menu:\n 1- Criar usuário\n 2- Adicionar Amigo\n 3- Sair\n:"))
+                op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Sair\n"))
                 
             elif (op2 == 3):
                 enviarDM()
