@@ -55,7 +55,6 @@ def main(Args = []):
                 print("Opção não existe.")
                 op2 = int(input("==========  MENU  ==========\n1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Sair\n"))
 
-
             if (op2 == 1):
 
                 id = randint(0,10000000)
