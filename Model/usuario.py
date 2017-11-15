@@ -3,6 +3,7 @@
 """
 
 import sqlite3
+from Model.amigo import Amigo
 
 conn = sqlite3.connect(':memory:')
 cursor = conn.cursor()
@@ -129,22 +130,34 @@ class Usuario():
         conn.close()
         
     def desfazerAmizade(self):
+        
+        opcao = int(input("Digite 1 para deletar amigo pelo id ou 2 para deletar o amigo pelo nome: "))
+        
+        if (opcao == 1):
+            
+            id_delt = int(input("Digite o id do seu amigo: "))
+            amigo.deletar(id_delt)
+        
+        elif (opcao == 2):
 
-    nome_amigo = str(input("Digite o nome do seu amigo que deseja desfazer amizade:"))
+            nome_amigo = str(input("Digite o nome do seu amigo que deseja desfazer amizade:"))
     
-    conn = sqlite3.connect(':memory:')
-    cursor = conn.cursor()
+            conn = sqlite3.connect(':memory:')
+            cursor = conn.cursor()
 
-    cursor.execute('''
-            DELETE FROM tb_amigo
-            WHERE nome =?
-        ''', (nome_amigo))
+            cursor.execute('''
+                    DELETE FROM tb_amigo
+                    WHERE nome =?
+                ''', (nome_amigo))
+            
+        else:
+            print("Opção não existente.")
 
-        conn.commit()
-        conn.close()
+            conn.commit()
+            conn.close()
 
     def fazerAmigo(self):
-        pass
+        amigo.inserir()
 
     def comemorarTempoAmizade(self):
         pass 
