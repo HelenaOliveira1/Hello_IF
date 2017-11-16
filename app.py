@@ -4,7 +4,7 @@
 
 def main(Args = []):
     import sqlite3
-    from random import *
+    from random import randint
     import datetime
     from Model.usuario import Usuario
     from Model.amigo import Amigo
@@ -20,7 +20,7 @@ def main(Args = []):
 
         nome = str(input("Digite o nome da sua rede social: "))
         
-        conn = sqlite3.connect(':memory:')
+        conn = sqlite3.connect('hello_if.db')
         cursor = conn.cursor()
         
         cursor.execute("""
@@ -90,7 +90,7 @@ def main(Args = []):
 
                     cursor.execute(sql)
                     
-                    amigo.inserir()
+                    Amigo.inserir()
 
                     # Salvando no Banco de Dados
                     conn.commit()
@@ -104,14 +104,14 @@ def main(Args = []):
                 op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Desfazer Amizade\n 5 - Realizar Busca\n 0 - Sair\n"))
                 
             elif (op2 == 3):
-                usuario.enviarDM()
+                Usuario.enviarDM()
                 
             elif (op2 == 4):
-                usuario.desfazerAmizade()
+                Usuario.desfazerAmizade()
                 
             elif (op2 == 5):
                 nome = str(input("Digite o nome do amigo: "))
-                usuario.realizarBusca(nome)
+                Usuario.realizarBusca(nome)
 
             elif (op2 == 0):
                 print("Saindo...\nOBS.: Todos os dados serão perdidos.")

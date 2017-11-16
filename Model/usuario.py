@@ -5,7 +5,7 @@
 import sqlite3
 from Model.amigo import Amigo
 
-conn = sqlite3.connect(':memory:')
+conn = sqlite3.connect('hello_if.db')
 cursor = conn.cursor()
 
 class Usuario():
@@ -23,7 +23,7 @@ class Usuario():
     def listar(self):
         usuarios = []
 
-        conn = sqlite3.connect(':memory:')
+        conn = sqlite3.connect('hello_if.db')
         cursor = conn.cursor()
 
         cursor.execute('''
@@ -45,7 +45,7 @@ class Usuario():
         return usuarios
 
     def inserir(self):
-        conn = sqlite3.connect(':memory:')
+        conn = sqlite3.connect('hello_if.db')
         cursor = conn.cursor()
 
         cursor.execute('''
@@ -60,7 +60,7 @@ class Usuario():
 
     def deletar(self, id_delt):
         
-        conn = sqlite3.connect(':memory:')
+        conn = sqlite3.connect('hello_if.db')
         cursor = conn.cursor()
         
         cursor.execute('''
@@ -73,7 +73,7 @@ class Usuario():
 
     def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao):
         
-        conn = sqlite3.connect(':memory:')
+        conn = sqlite3.connect('hello_if.db')
         cursor = conn.cursor()
         
         cursor.execute('''
@@ -88,13 +88,16 @@ class Usuario():
 
     def realizarBusca(self, nome):
         
-        conn = sqlite3.connect(':memory:')
+        conn = sqlite3.connect('hello_if.db')
         cursor = conn.cursor()
         
         cursor.execute('''
             SELECT * FROM tb_usuario
             WHERE nome LIKE '%?%'
         ''', (nome))
+
+        for linha in cursor.fetchall():
+            print("%s\n", linha)
         
         conn.commit()
         conn.close()
@@ -107,7 +110,7 @@ class Usuario():
 
     def enviarDM(self): #Envio de mensagem
         
-        conn = sqlite3.connect(':memory:')
+        conn = sqlite3.connect('hello_if.db')
         cursor = conn.cursor()
         
         texto = str(input("Digite o texto para ser enviado: "))
@@ -136,13 +139,13 @@ class Usuario():
         if (opcao == 1):
             
             id_delt = int(input("Digite o id do seu amigo: "))
-            amigo.deletar(id_delt)
+            Amigo.deletar(id_delt)
         
         elif (opcao == 2):
 
             nome_amigo = str(input("Digite o nome do seu amigo que deseja desfazer amizade:"))
     
-            conn = sqlite3.connect(':memory:')
+            conn = sqlite3.connect('hello_if.db')
             cursor = conn.cursor()
 
             cursor.execute('''
@@ -157,7 +160,7 @@ class Usuario():
             conn.close()
 
     def fazerAmigo(self):
-        amigo.inserir()
+        Amigo.inserir()
 
     def comemorarTempoAmizade(self):
         pass 
