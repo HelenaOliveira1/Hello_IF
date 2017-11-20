@@ -3,7 +3,7 @@
 """
 
 import sqlite3
-from Model.usuario import Usuario
+from Model.usuario import *
 
 conn = sqlite3.connect("hello_if.db")
 cursor = conn.cursor()
