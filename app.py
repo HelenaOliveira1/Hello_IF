@@ -32,8 +32,6 @@ def main(Args = []):
 
         try:
 
-
-
             conn = sqlite3.connect('%s.db'%nome)
             cursor = conn.cursor()
 
@@ -84,6 +82,7 @@ def main(Args = []):
                 dia = int(input("Digite dia de nascimento: "))
                 mes = int(input("Digite mes de nascimento: "))
                 ano = int(input("Digite ano de nascimento: "))
+                # Tá dando erro aqui ;-;
                 data_nasc = datetime.date(ano, mes, dia)
                 genero = str(input("Digite seu genero: "))
                 profissao = str(input("Digite sua profissao: "))
@@ -103,10 +102,10 @@ def main(Args = []):
                 # Tratado os possiveis erros, se acontecer.
                 try:
                     nome = input("Digite nome do amigo: ")
-                    sql = ("""
+                    sql = ('''
                         SELECT * FROM tb_amigo
                         WHERE nome LIKE nome=?
-                        """, (nome))
+                        ''', (nome))
 
                     cursor.execute(sql)
                     
