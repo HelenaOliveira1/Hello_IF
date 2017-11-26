@@ -38,8 +38,8 @@ class Mensagem():
         cursor = conn.cursor()
 
         cursor.execute('''
-            INSERT INTO tb_mensagem(visibilidade, texto) VALUES (self.visibilidade, self.texto)
-        ''')
+            INSERT INTO tb_mensagem(visibilidade, texto) VALUES (?,?)
+        ''', (self.visibilidade, self.texto))
 
         conn.commit()
         id = cursor.lastrowid

@@ -39,8 +39,8 @@ class Amigo():
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO tb_amigo(id, id_usuario, id_usuario_amigo) VALUES (self.id, self.usuario.id_u, self.amigo.id_a)
-        ''')
+            INSERT INTO tb_amigo(id, id_usuario, id_usuario_amigo) VALUES (?,?,?)
+        ''',(self.id, self.usuario.id_u, self.amigo.id_a))
 
         conn.commit()
         id = cursor.lastrowid

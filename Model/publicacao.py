@@ -35,8 +35,8 @@ class Publicacao():
         cursor = conn.cursor()
 
         cursor.execute('''
-            INSERT INTO tb_publicacao(tipo) VALUES (self.tipo)
-        ''')
+            INSERT INTO tb_publicacao(tipo) VALUES (?)
+        ''', self.tipo)
 
         conn.commit()
         id = cursor.lastrowid

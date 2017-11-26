@@ -3,8 +3,8 @@
 """
 
 import sqlite3
-from Model.usuario import Usuario
-from Model.mensagem import Mensagem
+from Model.usuario import *
+from Model.mensagem import *
 
 conn = sqlite3.connect("hello_if.db")
 cursor = conn.cursor()
@@ -42,8 +42,8 @@ class Chat():
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO tb_mensagem(id, id_usuario, visib_mens, id_usuario_amigo) VALUES (self.id, self.usuario.id_u, self.mensagem.visibilidade, self.amigo.id_a)
-        ''')
+            INSERT INTO tb_mensagem(id, id_usuario, visib_mens, id_usuario_amigo) VALUES (?,?,?,?)
+        ''',(self.id, self.usuario.id_u, self.mensagem.visibilidade, self.amigo.id_a))
 
         conn.commit()
         id = cursor.lastrowid

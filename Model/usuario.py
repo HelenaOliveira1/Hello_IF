@@ -3,7 +3,7 @@
 """
 
 import sqlite3
-from Model.amigo import Amigo
+from Model.amigo import *
 
 conn = sqlite3.connect('hello_if.db')
 cursor = conn.cursor()
@@ -49,8 +49,8 @@ class Usuario():
         cursor = conn.cursor()
 
         cursor.execute('''
-            INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao) VALUES (senha, login, logado,nome,data_nasc,genero,profissao)
-        ''')
+            INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao) VALUES (?,?,?,?,?,?,?)
+        ''',(senha, login, logado,nome,data_nasc,genero,profissao))
 
         conn.commit()
         id = cursor.lastrowid

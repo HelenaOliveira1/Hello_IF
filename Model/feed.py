@@ -3,8 +3,8 @@
 """
 
 import sqlite3
-from Model.usuario import Usuario
-from Model.mensagem import Mensagem
+from Model.usuario import *
+from Model.mensagem import *
 
 conn = sqlite3.connect("hello_if.db")
 cursor = conn.cursor()
@@ -23,7 +23,7 @@ class Feed():
         cursor = conn.cursor()
 
         cursor.execute('''
-            #SELECT * FROM tb_feed;
+            SELECT * FROM tb_feed;
         ''')
         for linha in cursor.fechall():
             usuario = linha[1]
@@ -40,8 +40,8 @@ class Feed():
         conn = sqlite3.connect("hello_if.db")
         cursor = conn.cursor()
         cursor.execute('''
-            #INSERT INTO tb_feed(id, id_usuario, visib_mens) VALUES (self.id, self.usuario.id_u, self.mensagem.visibilidade)
-        ''')
+            INSERT INTO tb_feed(id, id_usuario, visib_mens) VALUES (?,?,?)
+        ''', (self.id, self.usuario.id_u, self.mensagem.visibilidade))
 
         conn.commit()
         id = cursor.lastrowid

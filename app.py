@@ -70,7 +70,7 @@ def main(Args = []):
         while (cond):
             while (op2 != 1 and op2 != 2 and op2 != 3 and op2 != 4 and op2 != 5 and op2 != 0):
                 print("Opção não existe.")
-                op2 = int(input("==========  MENU  ==========\n1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Sair\n"))
+                op2 = int(input("==========  MENU  ==========\n1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Desfazer Amizade\n 4 - Realizar Busca\n 0 - Sair\n"))
 
             if (op2 == 1):
 
@@ -132,7 +132,7 @@ def main(Args = []):
                 Usuario.realizarBusca(nome)
 
             elif (op2 == 0):
-                print("Saindo...\nOBS.: Todos os dados serão perdidos.")
+                print("Saindo...")
                 cond = False
                 conn.close()
 
