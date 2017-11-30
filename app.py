@@ -102,12 +102,11 @@ def main(Args = []):
                 # Tratado os possiveis erros, se acontecer.
                 try:
                     nome = input("Digite nome do amigo: ")
-                    sql = ('''
+                    
+                    cursor.execute('''
                         SELECT * FROM tb_amigo
                         WHERE nome LIKE nome=?
                         ''', (nome))
-
-                    cursor.execute(sql)
                     
                     Amigo.inserir()
 
