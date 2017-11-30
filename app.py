@@ -72,71 +72,73 @@ def main(Args = []):
                 print("Opção não existe.")
                 op2 = int(input("==========  MENU  ==========\n1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Desfazer Amizade\n 4 - Realizar Busca\n 0 - Sair\n"))
 
-            if (op2 == 1):
+            try:
+                if (op2 == 1):
 
-                id = randint(0,10000000)
-                login = input("Digite seu login: ")
-                senha = input("Digite uma senha: ")
-                logado = False
-                nome = str(input("Digite seu nome: "))
-                dia = int(input("Digite dia de nascimento: "))
-                mes = int(input("Digite mes de nascimento: "))
-                ano = int(input("Digite ano de nascimento: "))
-                # Tá dando erro aqui ;-;
-                data_nasc = datetime.date(ano, mes, dia)
-                genero = str(input("Digite seu genero: "))
-                profissao = str(input("Digite sua profissao: "))
-                Usuario(id, senha, login, logado, nome, data_nasc, genero, profissao)
+                    id = randint(0,10000000)
+                    login = input("Digite seu login: ")
+                    senha = input("Digite uma senha: ")
+                    logado = False
+                    nome = str(input("Digite seu nome: "))
+                    dia = int(input("Digite dia de nascimento: "))
+                    mes = int(input("Digite mes de nascimento: "))
+                    ano = int(input("Digite ano de nascimento: "))
+                    # Tá dando erro aqui ;-;
+                    data_nasc = datetime.date(ano, mes, dia)
+                    genero = str(input("Digite seu genero: "))
+                    profissao = str(input("Digite sua profissao: "))
+                    Usuario(id, senha, login, logado, nome, data_nasc, genero, profissao)
 
-                cursor.execute('''
-                        INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao) 
-                        VALUES (?,?,?,?,?,?,?)
-                                ''',(senha, login, logado, nome, data_nasc, genero, profissao))
+                    cursor.execute('''
+                            INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao)
+                            VALUES (?,?,?,?,?,?,?)
+                                    ''',(senha, login, logado, nome, data_nasc, genero, profissao))
 
-                conn.commit()
-                print("Criado com sucesso!")
-                op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Desfazer Amizade\n 5 - Realizar Busca\n 0 - Sair\n"))
+                    conn.commit()
+                    print("Criado com sucesso!")
+                    op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Desfazer Amizade\n 5 - Realizar Busca\n 0 - Sair\n"))
 
-            elif (op2 == 2):
-    
+                elif (op2 == 2):
+
                 # Tratado os possiveis erros, se acontecer.
-                try:
+
                     nome = input("Digite nome do amigo: ")
-                    
+
                     cursor.execute('''
                         SELECT * FROM tb_amigo
                         WHERE nome LIKE nome=?
                         ''', (nome))
-                    
+
                     Amigo.inserir()
 
                     # Salvando no Banco de Dados
                     conn.commit()
                     print("Tudo certo nada errado... Até agora.")
 
-                except sqlite3.Error:
 
-                    print("Ocorreu um ERRO!...tente novamente mais tarde.")
-                    return False
-                    op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Desfazer Amizade\n 5 - Realizar Busca\n 0 - Sair\n"))
-                
-            elif (op2 == 3):
-                Usuario.enviarDM()
 
-            elif (op2 == 4):
-                Usuario.desfazerAmizade()
+                elif (op2 == 3):
+                    Usuario.enviarDM()
 
-            elif (op2 == 5):
-                nome = str(input("Digite o nome do amigo: "))
-                Usuario.realizarBusca(nome)
+                elif (op2 == 4):
+                    Usuario.desfazerAmizade()
 
-            elif (op2 == 0):
-                print("Saindo...")
-                cond = False
-                conn.close()
+                elif (op2 == 5):
+                    nome = str(input("Digite o nome do amigo: "))
+                    Usuario.realizarBusca(nome)
 
-            else:
-                print("Opção inválida")
+                elif (op2 == 0):
+                    print("Saindo...")
+                    cond = False
+                    conn.close()
+
+                else:
+                    print("Opção inválida")
+
+            except:
+
+                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+                op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Desfazer Amizade\n 5 - Realizar Busca\n 0 - Sair\n"))
 
     elif (op == 2):
         print("Saindo...")
