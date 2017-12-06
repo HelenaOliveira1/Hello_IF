@@ -31,7 +31,19 @@ def exibirMenuPrincipal():
 
     except ValueError:
         print("Opção inválida")
-
+        
+'''
+    Função para criar Rede Social
+'''
+def criarRedeSocial():
+    try:
+        nome = str(input("Digite o nome da sua rede social: "))
+        redeSocial = RedeSocial(nome)
+    
+        RedeSocialDAO.criarRedeSocial(redeSocial)
+    except:
+        print("Ocorreu um ERRO!...tente novamente mais tarde.")
+        
 '''
     Função Principal da rede
 '''
@@ -48,11 +60,7 @@ def main(Args = []):
 
         #Criação da Rede Social
         if (op == 1):
-
-            nome = str(input("Digite o nome da sua rede social: "))
-            redeSocial = RedeSocial(nome)
-
-            RedeSocialDAO.criarRedeSocial(redeSocial)
+            criarRedeSocial()
 
         # Criação do Usuário
         elif (op == 2):
