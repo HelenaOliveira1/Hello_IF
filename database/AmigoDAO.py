@@ -5,10 +5,11 @@
 import sqlite3
 
 conn = sqlite3.connect('hello_if.db')
-
 cursor = conn.cursor()
 
 def inserir_dados_amigo():
+    
+       # Tratado os possiveis erros, se acontecer.
     try:
         email_amigo = input("Digite o email do seu amigo: ")
 
@@ -17,7 +18,6 @@ def inserir_dados_amigo():
             WHERE login LIKE login=?""",(email_amigo))
 
         cursor.execute(sql)
-
         cursor.execute("""
             SELECT * FROM tb_usuario WHERE login=?
         """, email_amigo)
@@ -31,6 +31,7 @@ def inserir_dados_amigo():
         return False
 
 def lendo_imprimindo_todos_amigos():
+    
     cursor.execute("""
     SELECT * FROM tb_amigos;
     """)
@@ -43,6 +44,8 @@ def lendo_imprimindo_todos_amigos():
     print("Lemos com sucesso.")
 
 def alterar_dados_amigos():
+    
+       # Tratado os possiveis erros, se acontecer.
     try:
         # Salvando...
         conn.commit()
@@ -53,6 +56,8 @@ def alterar_dados_amigos():
         return False
 
 def deletar_dados_amigos():
+   
+       # Tratado os possiveis erros, se acontecer. 
     try:
         email_amigo = input("Digite o email do seu amigo: ")
 

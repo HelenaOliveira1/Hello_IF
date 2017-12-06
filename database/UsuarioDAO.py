@@ -5,16 +5,16 @@
 import sqlite3
 import datetime
 
-conn = sqlite3.connect('hello_if.db')
+conn = sqlite3.connect(':memory:')
 
 cursor = conn.cursor()
 
 def inserir_dados_usuario():
     try:
-        visibilidade = str(input("Digite seu nome: "))
         login = input("Digite seu login: ")
         senha = input("Digite uma senha: ")
         logado = False
+        nome = str(input("Digite seu nome: "))
         dia = int(input("Digite dia de nascimento: "))
         mes = int(input("Digite mes de nascimento: "))
         ano = int(input("Digite ano de nascimento: "))

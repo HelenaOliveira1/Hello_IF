@@ -2,146 +2,140 @@
     Menu principal da rede social
 '''
 
-def main(Args = []):
-    import sqlite3
-    from random import randint
-    import datetime
-    from Model.usuario import Usuario
-    from Model.amigo import Amigo
+import sqlite3
+from random import randint
+import datetime
+from Model.Usuario import Usuario
+from Model.Amigo import Amigo
+from database.RedeSocialDAO import RedeSocialDAO
+from Model.RedeSocial import RedeSocial
 
-    cont = False
+'''
+    Função para exibir o menu da Rede Social
+'''
+def exibirMenuPrincipal():
+
+    print("==========  MENU  ==========\n"
+        "1 - Criar ou entrar na Rede Social\n"
+        "2 - Criar usuário\n"
+        "3 - Adicionar Amigo\n"
+        "4 - Desfazer Amizade\n"
+        "5 - Realizar Busca\n"
+        "6 - Enviar Mensagem\n"
+        "0 - Sair\n")
+
+    try:
+        opcao = int(input("Digite a opção: "))
+
+        return opcao
+
+    except ValueError:
+        print("Opção inválida")
+
+'''
+    Função Principal da rede
+'''
+def main(Args = []):
+
+    cont = True
 
     print("==========   Bem vindo a nossa Rede Social!   ==========\n")
 
-    op  = ''
+    while(cont):
 
-    while(True):
-        try:
-            op = int(input("==========  MENU  ==========\n 1 - Criar ou entrar na Rede Social\n 2 - Sair\n"))
-            if (op != 1 and op != 2):
-                print("Número inválido")
-            else:
-                break
-        except ValueError:
-            print("Opção inválida")
+        #Exibindo Menu de Opções
+        op = exibirMenuPrincipal()
 
+        #Criação da Rede Social
+        if (op == 1):
 
-    if (op == 1):
+            nome = str(input("Digite o nome da sua rede social: "))
+            redeSocial = RedeSocial(nome)
 
-        nome = str(input("Digite o nome da sua rede social: "))
+            RedeSocialDAO.criarRedeSocial(redeSocial)
 
-        try:
-
-            conn = sqlite3.connect('%s.db'%nome)
-            cursor = conn.cursor()
-
-            cursor.execute("""
-            CREATE TABLE tb_usuario (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                senha VARCHAR(25) NOT NULL,
-                login VARCHAR(50) NOT NULL,
-                logado BOOLEAN,
-                nome VARCHAR(70) NOT NULL,
-                data_nasc DATE,
-                genero VARCHAR(10),
-                profissao VARCHAR(20));
-                """)
-
-            cursor.execute("""
-            CREATE TABLE tb_amigo (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                id_usuario INTEGER NOT NULL,
-                id_usuario_amigo INTEGER NOT NULL,
-                foreign key (id_usuario) references tb_usuario(id),
-                foreign key (id_usuario_amigo) references tb_usuario(id));
-                """)
-
-            conn.commit()
-
-            print("Sua rede social '%s' foi criada com sucesso!" %nome)
-        except:
-            print("Conexão bem sucedida com a rede social %s\n " %nome)
-
-
-
-        op2 = int(input("==========  MENU  ==========\n1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Desfazer Amizade\n 4 - Realizar Busca\n 0 - Sair\n"))
-        cond = True
-
-        while (cond):
-            while (op2 != 1 and op2 != 2 and op2 != 3 and op2 != 4 and op2 != 5 and op2 != 0):
-                print("Opção não existe.")
-                op2 = int(input("==========  MENU  ==========\n1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Desfazer Amizade\n 4 - Realizar Busca\n 0 - Sair\n"))
-
+        # Criação do Usuário
+        elif (op == 2):
+            # Tratado os possiveis erros, se acontecer.
             try:
-                if (op2 == 1):
 
-                    id = randint(0,10000000)
-                    login = input("Digite seu login: ")
-                    senha = input("Digite uma senha: ")
-                    logado = False
-                    nome = str(input("Digite seu nome: "))
-                    dia = int(input("Digite dia de nascimento: "))
-                    mes = int(input("Digite mes de nascimento: "))
-                    ano = int(input("Digite ano de nascimento: "))
-                    # Tá dando erro aqui ;-;
-                    data_nasc = datetime.date(ano, mes, dia)
-                    genero = str(input("Digite seu genero: "))
-                    profissao = str(input("Digite sua profissao: "))
-                    Usuario(id, senha, login, logado, nome, data_nasc, genero, profissao)
+                id = randint(0,10000000)
+                login = input("Digite seu login: ")
+                senha = input("Digite uma senha: ")
+                logado = False
+                nome = str(input("Digite seu nome: "))
+                dia = int(input("Digite dia de nascimento: "))
+                mes = int(input("Digite mes de nascimento: "))
+                ano = int(input("Digite ano de nascimento: "))
+                data_nasc = datetime.date(ano, mes, dia)
+                genero = str(input("Digite seu genero: "))
+                profissao = str(input("Digite sua profissao: "))
+                usuario = Usuario(id, senha, login, logado, nome, data_nasc, genero, profissao)
 
-                    cursor.execute('''
-                            INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao)
-                            VALUES (?,?,?,?,?,?,?)
-                                    ''',(senha, login, logado, nome, data_nasc, genero, profissao))
+                cursor.execute('''
+                        INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao)
+                        VALUES (?,?,?,?,?,?,?)
+                                ''',(usuario.senha, usuario.login, usuario.logado, usuario.nome, usuario.data_nasc, usuario.genero, usuario.profissao))
 
-                    conn.commit()
-                    print("Criado com sucesso!")
-                    op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Desfazer Amizade\n 5 - Realizar Busca\n 0 - Sair\n"))
-
-                elif (op2 == 2):
-
-                # Tratado os possiveis erros, se acontecer.
-
-                    nome = input("Digite nome do amigo: ")
-
-                    cursor.execute('''
-                        SELECT * FROM tb_amigo
-                        WHERE nome LIKE nome=?
-                        ''', (nome))
-
-                    Amigo.inserir()
-
-                    # Salvando no Banco de Dados
-                    conn.commit()
-                    print("Tudo certo nada errado... Até agora.")
-
-
-
-                elif (op2 == 3):
-                    Usuario.enviarDM()
-
-                elif (op2 == 4):
-                    Usuario.desfazerAmizade()
-
-                elif (op2 == 5):
-                    nome = str(input("Digite o nome do amigo: "))
-                    Usuario.realizarBusca(nome)
-
-                elif (op2 == 0):
-                    print("Saindo...")
-                    cond = False
-                    conn.close()
-
-                else:
-                    print("Opção inválida")
+                conn.commit()
+                print("Criado com sucesso!")
 
             except:
-
                 print("Ocorreu um ERRO!...tente novamente mais tarde.")
-                op2 = int(input("==========  MENU  ==========\n 1 - Criar usuário\n 2 - Adicionar Amigo\n 3 - Enviar mensagem\n 4 - Desfazer Amizade\n 5 - Realizar Busca\n 0 - Sair\n"))
 
-    elif (op == 2):
-        print("Saindo...")
+        #Adicionar Amigo
+        elif (op == 3):
+            try:
+                nome = input("Digite nome do amigo: ")
+
+                cursor.execute('''
+                    SELECT * FROM tb_amigo
+                    WHERE nome LIKE nome=?
+                    ''', (nome))
+
+                Amigo.inserir()
+
+                # Salvando no Banco de Dados
+                conn.commit()
+                print("Amigo adicionado com sucesso!")
+
+            except:
+                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+
+        #Desfazer Amizade
+        elif(op == 4):
+            try:
+                Usuario.desfazerAmizade()
+
+            except:
+                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+
+        #Realizar Busca no Banco
+        elif (op == 5):
+            try:
+                nome = str(input("Digite o nome do amigo: "))
+                Usuario.realizarBusca(nome)
+
+            except:
+                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+
+        #Enviando Mensagem Privada
+        elif (op == 6):
+            try:
+                Usuario.enviarDM()
+
+            except:
+                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+
+        #Saindo da Aplicação
+        elif (op == 0):
+            print("Saindo...")
+            cont = False
+            conn.close()
+
+        #Se a opção for inválida
+        else:
+            print("Opção inválida")
 
 if (__name__== '__main__'):
     main()

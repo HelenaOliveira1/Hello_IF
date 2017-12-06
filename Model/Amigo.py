@@ -3,7 +3,7 @@
 """
 
 import sqlite3
-from Model.usuario import *
+from Model.Usuario import *
 
 conn = sqlite3.connect("hello_if.db")
 cursor = conn.cursor()
@@ -59,3 +59,6 @@ class Amigo():
 
         conn.commit()
         conn.close()
+
+    def __str__(self):
+        return "Amigo <%s>" %(self.amigo)

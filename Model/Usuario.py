@@ -3,7 +3,7 @@
 """
 
 import sqlite3
-from Model.amigo import *
+from Model.Amigo import *
 
 conn = sqlite3.connect('hello_if.db')
 cursor = conn.cursor()
@@ -163,4 +163,7 @@ class Usuario():
         Amigo.inserir()
 
     def comemorarTempoAmizade(self):
-        pass 
+        pass
+
+    def __str__(self):
+        return "Usuario <%s>" %(self.nome)

@@ -58,3 +58,6 @@ class Mensagem():
 
         conn.commit()
         conn.close()
+
+    def __str__(self):
+        return "Mensagem <%i>" %(self.id)

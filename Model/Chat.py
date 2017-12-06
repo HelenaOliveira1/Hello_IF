@@ -3,8 +3,8 @@
 """
 
 import sqlite3
-from Model.usuario import *
-from Model.mensagem import *
+from Model.Usuario import *
+from Model.Mensagem import *
 
 conn = sqlite3.connect("hello_if.db")
 cursor = conn.cursor()
@@ -62,3 +62,6 @@ class Chat():
 
         conn.commit()
         conn.close()
+
+    def __str__(self):
+        return "Chat <%i>" %(self.id)

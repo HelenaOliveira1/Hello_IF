@@ -55,3 +55,6 @@ class Publicacao():
 
         conn.commit()
         conn.close()
+
+    def __str__(self):
+        return "Publicação <%i>" %(self.id)
