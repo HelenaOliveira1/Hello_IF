@@ -50,7 +50,7 @@ class Usuario():
 
         cursor.execute('''
             INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao) VALUES (?,?,?,?,?,?,?)
-        ''',(senha, login, logado,nome,data_nasc,genero,profissao))
+        ''',(self.senha, self.login,  self.logado, self.nome, self.data_nasc,self.genero,self.profissao))
 
         conn.commit()
         id = cursor.lastrowid
@@ -63,10 +63,7 @@ class Usuario():
         conn = sqlite3.connect('hello_if.db')
         cursor = conn.cursor()
         
-        cursor.execute('''
-            DELETE FROM tb_usuario
-            WHERE id =?
-        ''', id_delt)
+        cursor.execute('''DELETE FROM tb_usuario WHERE id =?''', id_delt)
 
         conn.commit()
         conn.close()
@@ -91,10 +88,7 @@ class Usuario():
         conn = sqlite3.connect('hello_if.db')
         cursor = conn.cursor()
         
-        cursor.execute('''
-            SELECT * FROM tb_usuario
-            WHERE nome LIKE '%?%'
-        ''', (nome))
+        cursor.execute(''' SELECT * FROM tb_usuario WHERE nome LIKE '%?%' ''', (nome))
 
         for linha in cursor.fetchall():
             print("%s\n", linha)
@@ -116,16 +110,10 @@ class Usuario():
         texto = str(input("Digite o texto para ser enviado: "))
         usuario = str(input("Digite o nome do destinatário da mensagem: "))
         
-        cursor.execute('''
-            SELECT nome FROM tb_usuario
-            WHERE nome=?
-        ''', (usuario))
+        cursor.execute('''SELECT nome FROM tb_usuario WHERE nome=? ''', (usuario))
         
         #Enviando mensagem...
-        cursor.execute('''
-           UPDATE tb_mensagem
-           SET texto=?
-        ''', (texto))
+        cursor.execute(''' UPDATE tb_mensagem SET texto=? ''', (texto))
         
         print("Mensagem enviada com sucesso.")
         
@@ -137,27 +125,20 @@ class Usuario():
         opcao = int(input("Digite 1 para deletar amigo pelo id ou 2 para deletar o amigo pelo nome: "))
         
         if (opcao == 1):
-            
             id_delt = int(input("Digite o id do seu amigo: "))
             Amigo.deletar(id_delt)
         
         elif (opcao == 2):
-
             nome_amigo = str(input("Digite o nome do seu amigo que deseja desfazer amizade:"))
-    
             conn = sqlite3.connect('hello_if.db')
             cursor = conn.cursor()
 
-            cursor.execute('''
-                    DELETE FROM tb_amigo
-                    WHERE nome =?
-                ''', (nome_amigo))
-            
+            cursor.execute('''DELETE FROM tb_amigo WHERE nome =? ''', (nome_amigo))
         else:
             print("Opção não existente.")
 
-            conn.commit()
-            conn.close()
+        conn.commit()
+        conn.close()
 
     def fazerAmigo(self):
         Amigo.inserir()
