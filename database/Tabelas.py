@@ -86,4 +86,5 @@ def criarTabelas(redesocial: RedeSocial):
     conn.commit()
 
     # Desconectando...
+    cursor.close()
     conn.close()

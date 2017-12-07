@@ -2,14 +2,15 @@
     DML da tabela amigo
 """
 
-import sqlite3
+import mysql
+from database.Config_DB import *
 
-conn = sqlite3.connect('hello_if.db')
+conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
 def inserir_dados_amigo():
-    
-       # Tratado os possiveis erros, se acontecer.
+
+    # Tratado os possiveis erros, se acontecer.
     try:
         email_amigo = input("Digite o email do seu amigo: ")
 
@@ -26,12 +27,14 @@ def inserir_dados_amigo():
         conn.commit()
         print("Sucesso.")
 
-    except sqlite3.Error:
+    except mysql.Error:
         print("Ocorreu um ERRO!")
         return False
+    cursor.close()
+    conn.close()
 
 def lendo_imprimindo_todos_amigos():
-    
+
     cursor.execute("""
     SELECT * FROM tb_amigos;
     """)
@@ -43,21 +46,27 @@ def lendo_imprimindo_todos_amigos():
     conn.commit()
     print("Lemos com sucesso.")
 
+    cursor.close()
+    conn.close()
+
 def alterar_dados_amigos():
-    
+
        # Tratado os possiveis erros, se acontecer.
     try:
         # Salvando...
         conn.commit()
         print("Registro alterado com sucesso.")
 
-    except sqlite3.Error:
+    except mysql.Error:
         print("Ocorreu um ERRO!")
         return False
 
+    cursor.close()
+    conn.close()
+
 def deletar_dados_amigos():
-   
-       # Tratado os possiveis erros, se acontecer. 
+
+       # Tratado os possiveis erros, se acontecer.
     try:
         email_amigo = input("Digite o email do seu amigo: ")
 
@@ -71,6 +80,9 @@ def deletar_dados_amigos():
         conn.commit()
         print("Sucesso.")
 
-    except sqlite3.Error:
+    except mysql.Error:
         print("Ocorreu um ERRO!")
         return False
+
+    cursor.close()
+    conn.close()
