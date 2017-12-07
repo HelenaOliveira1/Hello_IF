@@ -1,14 +1,14 @@
 """
-    App.py conecta o banco e cria todas as tabelas de Hello_IF
+    Criação das tabelas de Hello_IF
 """
 
-import sqlite3
+import mysql
 from Model.RedeSocial import RedeSocial
 
 def criarTabelas(redesocial: RedeSocial):
 
     # Conectando o Banco de dados
-    conn = sqlite3.connect("%s.db"%redesocial.nome)
+    conn = mysql.connector.connect("%s.db"%redesocial.nome)
 
     # Criando o cursor
     cursor = conn.cursor()
@@ -88,3 +88,4 @@ def criarTabelas(redesocial: RedeSocial):
     # Desconectando...
     cursor.close()
     conn.close()
+
