@@ -1,5 +1,5 @@
 """
-    DML da tabela mensagem
+    DML da tabela publicacao
 """
 
 import mysql
@@ -8,15 +8,13 @@ from database.Config_DB import *
 conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
-def inserir_dados_mensagem():
+def inserir_dados_publicacao():
     try:
-        visibilidade = str(input("Digite visibilidade da mensagem: "))
-        texto = str(input("Digite todo texto: "))
-        assunto = str(input("Digite o assunto da mensagem: "))
+        tipo = str(input("Digite tipo da publicação: "))
 
         cursor.execute("""
-        INSERT INTO tb_mensagem (visibilidade, texto, assunto)
-        VALUES (?,?,?) """, (visibilidade, texto, assunto))
+        INSERT INTO tb_publicacao (tipo)
+        VALUES (?,?,?) """, (tipo))
 
         # Salvando...
         conn.commit()
@@ -29,9 +27,10 @@ def inserir_dados_mensagem():
     cursor.close()
     conn.close()
 
-def lendo_imprimindo_todas_mensagens():
-
-    cursor.execute(""" SELECT * FROM tb_mensagem; """)
+def lendo_imprimindo_todas_publicacao():
+    cursor.execute("""
+    SELECT * FROM tb_publicacao;
+    """)
 
     for linha in cursor.fetchall():
         print(linha)
@@ -43,17 +42,15 @@ def lendo_imprimindo_todas_mensagens():
     cursor.close()
     conn.close()
 
-def alterar_dados_mensagem():
+def alterar_dados_publicacao():
     try:
-        novo_visibilidade = str(input("Digite nova visibilidade da mensagem: "))
-        novo_texto = str(input("Digite novo texto: "))
-        novo_assunto = str(input("Digite novo assunto da mensagem: "))
+        novo_tipo = str(input("Digite novo tipo da publicação: "))
 
         cursor.execute("""
             UPDATE tb_mensagem
-            SET novo_visibilidade=?, novo_texto=?, novo_assunto=?
-            WHERE login = ?
-            """, (novo_visibilidade, novo_texto, novo_assunto))
+            SET novo_tipo=?
+            WHERE tipo = ?
+            """, (novo_tipo))
 
         # Salvando...
         conn.commit()
@@ -66,13 +63,13 @@ def alterar_dados_mensagem():
     cursor.close()
     conn.close()
 
-def deletar_dados_mensagem():
+def deletar_dados_publicacao():
     try:
-        assunto_mensagem = int(input("Digite o assunto da mensagem para remover: "))
+        tipo_publicacao = int(input("Digite o tipo da publicação para remover: "))
         cursor.execute("""
-            DELETE FROM tb_mensagem
-            WHERE assunto = ?
-            """, (assunto_mensagem))
+            DELETE FROM tb_publicacao
+            WHERE tipo = ?
+            """, (tipo_publicacao))
 
         # Salvando...
         conn.commit()
