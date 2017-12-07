@@ -43,10 +43,39 @@ class Usuario(Pessoa):
         conn.close()
 
     def postPubPrivada(self):
-        pass
+        conn = mysql.connector.connect(**config)
+        cursor = conn.cursor()
+
+        texto = str(input("Digite o texto para ser enviado: "))
+        usuario = str(input("Digite o nome do destinatário da publicação: "))
+
+        cursor.execute('''SELECT nome FROM tb_usuario WHERE nome=? ''', (usuario))
+
+        #Enviando mensagem...
+        cursor.execute(''' UPDATE tb_publicacao SET texto=? ''', (texto))
+
+        print("Publicação enviada com sucesso.")
+
+        conn.commit()
+        cursor.close()
+        conn.close()
 
     def postPubPublica(self):
-        pass
+        conn = mysql.connector.connect(**config)
+        cursor = conn.cursor()
+
+        texto = str(input("Digite o texto para ser enviado: "))
+
+        cursor.execute('''SELECT nome FROM tb_usuario''')
+
+        #Enviando mensagem...
+        cursor.execute(''' UPDATE tb_publicacao SET texto=? ''', (texto))
+
+        print("Publicação enviada com sucesso.")
+
+        conn.commit()
+        cursor.close()
+        conn.close()
 
     def enviarDM(self): #Envio de mensagem
 

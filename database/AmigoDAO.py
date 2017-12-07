@@ -4,85 +4,60 @@
 
 import mysql
 from database.Config_DB import *
+from Model.Amigo import *
 
 conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
-def inserir_dados_amigo():
-
-    # Tratado os possiveis erros, se acontecer.
+def inserir(self):
     try:
-        email_amigo = input("Digite o email do seu amigo: ")
+        conn = mysql.conncetor.connect(**config)
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO tb_amigo(id, id_usuario, id_usuario_amigo) VALUES (?,?,?)
+        ''', (self.id, self.usuario.id_u, self.amigo.id_a))
 
-        sql = ("""
-            SELECT * FROM tb_amigo
-            WHERE login LIKE login=?""",(email_amigo))
-
-        cursor.execute(sql)
-        cursor.execute("""
-            SELECT * FROM tb_usuario WHERE login=?
-        """, email_amigo)
-
-        # Salvando...
         conn.commit()
-        print("Sucesso.")
+        id = cursor.lastrowid
+        cursor.close()
+        conn.close()
+
+        return id
 
     except mysql.Error:
         print("Ocorreu um ERRO!")
         return False
+
     cursor.close()
     conn.close()
 
-def lendo_imprimindo_todos_amigos():
 
-    cursor.execute("""
-    SELECT * FROM tb_amigos;
-    """)
+def listar(self):
+    amigos = []
 
-    for linha in cursor.fetchall():
-        print(linha)
+    conn = mysql.connector.connect(**config)
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT * FROM tb_amigo;
+    ''')
+    for linha in cursor.fechall():
+        usuario = linha[1]
+        amigo = linha[2]
+        lista_amigo = Amigo(usuario, amigo)
+        amigos.append(lista_amigo)
 
-    # Salvando...
+    cursor.close()
+    conn.close()
+
+    return amigos
+
+def deletar(self, id_delt):
+    conn = mysql.conncetor.connect(**config)
+    cursor = conn.cursor()
+    cursor.execute('''
+        DELETE FROM tb_amigo
+        WHERE id =?
+        ''', id_delt)
+
     conn.commit()
-    print("Lemos com sucesso.")
-
-    cursor.close()
-    conn.close()
-
-def alterar_dados_amigos():
-
-       # Tratado os possiveis erros, se acontecer.
-    try:
-        # Salvando...
-        conn.commit()
-        print("Registro alterado com sucesso.")
-
-    except mysql.Error:
-        print("Ocorreu um ERRO!")
-        return False
-
-    cursor.close()
-    conn.close()
-
-def deletar_dados_amigos():
-
-       # Tratado os possiveis erros, se acontecer.
-    try:
-        email_amigo = input("Digite o email do seu amigo: ")
-
-        sql = ("""
-            DELETE * FROM tb_amigo
-            WHERE login LIKE login=?""",(email_amigo))
-
-        cursor.execute(sql)
-
-        # Salvando...
-        conn.commit()
-        print("Sucesso.")
-
-    except mysql.Error:
-        print("Ocorreu um ERRO!")
-        return False
-
-    cursor.close()
     conn.close()
