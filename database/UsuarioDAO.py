@@ -2,10 +2,13 @@
     DML da tabela usuario
 """
 
-import sqlite3
+import mysql
+from Model.Usuario import Usuario
+from database.Config_DB import *
 import datetime
 
-conn = sqlite3.connect(':memory:')
+conn = mysql.connector.connect(**config)
+cursor = conn.cursor()
 
 cursor = conn.cursor()
 
@@ -30,16 +33,22 @@ def inserir_dados_usuario():
         conn.commit()
         print("Um registro inserido com sucesso.")
 
-    except sqlite3.Error:
+    except mysql.Error:
         print("Ocorreu um ERRO!")
         return False
+
+    conn.commit()
+    id = cursor.lastrowid
+    cursor.close()
+    conn.close()
+
+    return id
 
 def inserir_lista_usuario():
 
     try:
         lista = input("Digite uma lista tipo:[()]: ")
-        cursor.executemany("""
-        INSERT INTO tb_usuario (senha, login, logado, nome, data_nasc, genero, profissao)
+        cursor.executemany("""INSERT INTO tb_usuario (senha, login, logado, nome, data_nasc, genero, profissao)
         VALUES (?,?,?,?,?,?,?) """, lista)
 
         # Salvando...
@@ -47,21 +56,35 @@ def inserir_lista_usuario():
         print("Registros inseridos com sucesso.")
 
 
-    except sqlite3.Error:
+    except mysql.Error:
         print("Ocorreu um ERRO!")
         return False
 
-def lendo_imprimindo_todos_usuario():
-    cursor.execute("""
-    SELECT * FROM tb_usuario;
-    """)
+    cursor.close()
+    conn.close()
 
-    for linha in cursor.fetchall():
-        print(linha)
+def listar(self):
+    usuarios = []
 
-    # Salvando...
-    conn.commit()
-    print("Lemos com sucesso.")
+    conn = mysql.connector.connect(**config)
+    cursor = conn.cursor()
+
+    cursor.execute('''SELECT * FROM tb_usuario; ''')
+    for linha in cursor.fechall():
+        senha = linha[1]
+        login = linha[2]
+        logado = linha[3]
+        nome = linha[4]
+        data_nasc = linha[5]
+        genero = linha[6]
+        profissao = linha[7]
+        usuario = Usuario(senha, login, logado, nome, data_nasc, genero, profissao)
+        usuarios.append(usuario)
+
+    cursor.close()
+    conn.close()
+
+    return usuarios
 
 def alterar_dados_usuario():
     try:
@@ -87,22 +110,25 @@ def alterar_dados_usuario():
         conn.commit()
         print("Registro alterado com sucesso.")
 
-    except sqlite3.Error:
+    except mysql.Error:
         print("Ocorreu um ERRO!")
         return False
+
+    cursor.close()
+    conn.close()
 
 def deletar_dados_usuario():
     try:
         login_usuario = int(input("Digite o login do usuario para remover: "))
-        cursor.execute("""
-            DELETE FROM tb_usuario
-            WHERE login = ?
-            """, (login_usuario))
+        cursor.execute(""" DELETE FROM tb_usuario WHERE login = ? """, (login_usuario))
 
         # Salvando...
         conn.commit()
         print("Registro deletado com sucesso.")
 
-    except sqlite3.Error:
+    except mysql.Error:
         print("Ocorreu um ERRO!")
         return False
+
+    cursor.close()
+    conn.close()
