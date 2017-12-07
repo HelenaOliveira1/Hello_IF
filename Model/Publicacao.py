@@ -2,9 +2,10 @@
     Publicação Orientado a Objeto
 """
 
-import sqlite3
+import mysql
+from database.Config_DB import *
 
-conn = sqlite3.connect("hello_if.db")
+conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
 class Publicacao():
@@ -15,7 +16,7 @@ class Publicacao():
     def listar(self):
         publicacoes = []
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
 
         cursor.execute('''
@@ -26,34 +27,34 @@ class Publicacao():
             publicacao = Publicacao(tipo)
             publicacoes.append(publicacao)
 
+        cursor.close()
         conn.close()
 
         return publicacoes
 
     def inserir(self):
-        conn = sqlite3.connect("hello_if.db")
+
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
 
-        cursor.execute('''
-            INSERT INTO tb_publicacao(tipo) VALUES (?)
-        ''', self.tipo)
+        cursor.execute(''' INSERT INTO tb_publicacao(tipo) VALUES (?) ''', self.tipo)
 
         conn.commit()
         id = cursor.lastrowid
+        cursor.close()
         conn.close()
-        
+
         return id
 
     def deletar(self, id_mens):
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
-        cursor.execute('''
-            DELETE FROM tb_publicacao
-            WHERE id =?
-            ''', (id_mens))
+
+        cursor.execute(''' DELETE FROM tb_publicacao WHERE id =? ''', (id_mens))
 
         conn.commit()
+        cursor.close()
         conn.close()
 
     def __str__(self):

@@ -2,10 +2,11 @@
     Amigo Orientado a Objeto
 """
 
-import sqlite3
 from Model.Usuario import *
+import mysql
+from database.Config_DB import *
 
-conn = sqlite3.connect("hello_if.db")
+conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
 class Amigo():
@@ -19,7 +20,7 @@ class Amigo():
 
         amigos = []
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
         cursor.execute('''
             SELECT * FROM tb_amigo;
@@ -30,13 +31,14 @@ class Amigo():
             lista_amigo = Amigo(usuario, amigo)
             amigos.append(lista_amigo)
 
+        cursor.close()
         conn.close()
 
         return amigos
 
     def inserir(self):
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.conncetor.connect(**config)
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO tb_amigo(id, id_usuario, id_usuario_amigo) VALUES (?,?,?)
@@ -44,13 +46,14 @@ class Amigo():
 
         conn.commit()
         id = cursor.lastrowid
+        cursor.close()
         conn.close()
-        
+
         return id
 
     def deletar(self, id_delt):
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.conncetor.connect(**config)
         cursor = conn.cursor()
         cursor.execute('''
             DELETE FROM tb_amigo
@@ -61,4 +64,7 @@ class Amigo():
         conn.close()
 
     def __str__(self):
-        return "Amigo <%s>" %(self.amigo)
+        return "Amigo <%s>" %(self.nome)
+
+    def __repr__(self):
+        return self.__str__()

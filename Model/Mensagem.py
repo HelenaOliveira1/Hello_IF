@@ -2,9 +2,10 @@
     Mensagem Orientado a Objeto
 """
 
-import sqlite3
+import mysql
+from database.Config_DB import *
 
-conn = sqlite3.connect("hello_if.db")
+conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
 class Mensagem():
@@ -17,7 +18,7 @@ class Mensagem():
     def listar(self):
         mensagens = []
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
 
         cursor.execute('''
@@ -29,12 +30,14 @@ class Mensagem():
             mensagem = Mensagem(visibilidade, texto)
             mensagens.append(mensagem)
 
+        cursor.close()
         conn.close()
 
         return mensagens
 
     def inserir(self):
-        conn = sqlite3.connect("hello_if.db")
+
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
 
         cursor.execute('''
@@ -43,20 +46,19 @@ class Mensagem():
 
         conn.commit()
         id = cursor.lastrowid
+        cursor.close()
         conn.close()
-        
+
         return id
 
     def deletar(self, id_mens):
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
-        cursor.execute('''
-            DELETE FROM tb_mensagem
-            WHERE id =?
-            ''', id_mens)
+        cursor.execute(''' DELETE FROM tb_mensagem WHERE id =? ''', id_mens)
 
         conn.commit()
+        cursor.close()
         conn.close()
 
     def __str__(self):

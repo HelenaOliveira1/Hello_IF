@@ -2,11 +2,12 @@
     Feed Orientado a Objeto
 """
 
-import sqlite3
+import mysql
+from database.Config_DB import *
 from Model.Usuario import *
 from Model.Mensagem import *
 
-conn = sqlite3.connect("hello_if.db")
+conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
 class Feed():
@@ -19,52 +20,58 @@ class Feed():
     def listar(self):
 
         publicacoes = []
-        conn = sqlite3.connect("hello_if.db")
+
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
 
-        cursor.execute('''
-            SELECT * FROM tb_feed;
-        ''')
+        cursor.execute(''' SELECT * FROM tb_feed; ''')
+
         for linha in cursor.fechall():
             usuario = linha[1]
             mensagem = linha[2]
             lista_feed = Feed(usuario, mensagem)
             publicacoes.append(lista_feed)
 
+        cursor.close()
         conn.close()
 
         return publicacoes
 
     def inserir(self):
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
+
         cursor.execute('''
             INSERT INTO tb_feed(id, id_usuario, visib_mens) VALUES (?,?,?)
         ''', (self.id, self.usuario.id_u, self.mensagem.visibilidade))
 
         conn.commit()
         id = cursor.lastrowid
+        cursor.close()
         conn.close()
-        
+
         return id
 
     def deletar(self, id_mensagem):
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
+
         cursor.execute('''
             DELETE FROM tb_feed
             WHERE id =?
             ''', id_mensagem)
 
         conn.commit()
+        cursor.close()
         conn.close()
 
     def atualizar(self, visib_mens):
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
+
         cursor.execute('''
             UPDATE tb_feed
             SET visib_mens=?
@@ -72,6 +79,7 @@ class Feed():
             ''', (visib_mens))
 
         conn.commit()
+        cursor.close()
         conn.close()
 
     def __str__(self):
