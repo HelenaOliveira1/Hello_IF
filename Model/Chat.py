@@ -2,11 +2,14 @@
     Chat Orientado a Objeto
 """
 
-import sqlite3
+
+from Model.Usuario import *
+import mysql
+from database.Config_DB import *
 from Model.Usuario import *
 from Model.Mensagem import *
 
-conn = sqlite3.connect("hello_if.db")
+conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
 class Chat():
@@ -20,7 +23,7 @@ class Chat():
     def listar(self):
         mensagens = []
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
 
         cursor.execute('''
@@ -33,13 +36,14 @@ class Chat():
             lista_mensagens = Chat(usuario, amigo, mensagem)
             mensagens.append(lista_mensagens)
 
+        cursor.close()
         conn.close()
 
         return mensagens
 
     def inserir(self):
-        
-        conn = sqlite3.connect("hello_if.db")
+
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO tb_mensagem(id, id_usuario, visib_mens, id_usuario_amigo) VALUES (?,?,?,?)
@@ -47,20 +51,20 @@ class Chat():
 
         conn.commit()
         id = cursor.lastrowid
+        cursor.close()
         conn.close()
-        
+
         return id
 
     def deletar(self, id_delt):
 
-        conn = sqlite3.connect("hello_if.db")
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
-        cursor.execute('''
-            DELETE FROM tb_chat
-            WHERE id =?
-            ''', id_delt)
+
+        cursor.execute(''' DELETE FROM tb_chat WHERE id =? ''', id_delt)
 
         conn.commit()
+        cursor.close()
         conn.close()
 
     def __str__(self):

@@ -2,15 +2,17 @@
     Usuario Orientado a Objeto
 """
 
-import sqlite3
+import mysql
 from Model.Amigo import *
+from database.Config_DB import *
+from Model.Pessoa import Pessoa
 
-conn = sqlite3.connect('hello_if.db')
+conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
-class Usuario():
-
-    def __init__(self, id, senha, login, logado, nome, data_nasc, genero, profissao):
+class Usuario(Pessoa):
+    def __init__(self, id,senha, login, logado, nome, data_nasc, genero, profissao):
+        super(Usuario, self).__init__(nome, genero)
         self.id = id
         self.senha = senha
         self.login = login
@@ -20,150 +22,106 @@ class Usuario():
         self.genero = genero
         self.profissao = profissao
 
-    def listar(self):
-        usuarios = []
+    def __str__(self):
+        return "Usuario <%s>" % (self.nome)
 
-        conn = sqlite3.connect('hello_if.db')
-        cursor = conn.cursor()
-
-        cursor.execute('''
-            SELECT * FROM tb_usuario;
-        ''')
-        for linha in cursor.fechall():
-            senha = linha[1]
-            login = linha[2]
-            logado = linha[3]
-            nome = linha[4]
-            data_nasc = linha[5]
-            genero = linha[6]
-            profissao = linha[7]
-            usuario = Usuario(senha, login, logado, nome, data_nasc, genero, profissao)
-            usuarios.append(usuario)
-
-        conn.close()
-
-        return usuarios
-
-    def inserir(self):
-        conn = sqlite3.connect('hello_if.db')
-        cursor = conn.cursor()
-
-        cursor.execute('''
-            INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao) VALUES (?,?,?,?,?,?,?)
-        ''',(senha, login, logado,nome,data_nasc,genero,profissao))
-
-        conn.commit()
-        id = cursor.lastrowid
-        conn.close()
-        
-        return id
-
-    def deletar(self, id_delt):
-        
-        conn = sqlite3.connect('hello_if.db')
-        cursor = conn.cursor()
-        
-        cursor.execute('''
-            DELETE FROM tb_usuario
-            WHERE id =?
-        ''', id_delt)
-
-        conn.commit()
-        conn.close()
-
-    def atualizar(self, nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao):
-        
-        conn = sqlite3.connect('hello_if.db')
-        cursor = conn.cursor()
-        
-        cursor.execute('''
-            UPDATE tb_usuario
-            SET nova_senha = ?, novo_login = ?, novo_logado = ?, novo_nome = ?, nova_data_nasc = ?, novo_genero = ?, nova_profissao = ?
-            VALUES (?,?,?,?,?,?,?)
-            WHERE id=?
-        ''', (nova_senha, novo_login, novo_logado, novo_nome, nova_data_nasc, novo_genero, nova_profissao, self.id))
-
-        conn.commit()
-        conn.close()
+    def __repr__(self):
+        return self.__str__()
 
     def realizarBusca(self, nome):
-        
-        conn = sqlite3.connect('hello_if.db')
+
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
-        
-        cursor.execute('''
-            SELECT * FROM tb_usuario
-            WHERE nome LIKE '%?%'
-        ''', (nome))
+
+        cursor.execute(''' SELECT * FROM tb_usuario WHERE nome LIKE '%?%' ''', (nome))
 
         for linha in cursor.fetchall():
             print("%s\n", linha)
-        
+
         conn.commit()
+        cursor.close()
         conn.close()
-        
+
     def postPubPrivada(self):
-        pass
+        conn = mysql.connector.connect(**config)
+        cursor = conn.cursor()
+
+        texto = str(input("Digite o texto para ser enviado: "))
+        usuario = str(input("Digite o nome do destinatário da publicação: "))
+
+        cursor.execute('''SELECT nome FROM tb_usuario WHERE nome=? ''', (usuario))
+
+        #Enviando mensagem...
+        cursor.execute(''' UPDATE tb_publicacao SET texto=? ''', (texto))
+
+        print("Publicação enviada com sucesso.")
+
+        conn.commit()
+        cursor.close()
+        conn.close()
 
     def postPubPublica(self):
-        pass
+        conn = mysql.connector.connect(**config)
+        cursor = conn.cursor()
+
+        texto = str(input("Digite o texto para ser enviado: "))
+
+        cursor.execute('''SELECT nome FROM tb_usuario''')
+
+        #Enviando mensagem...
+        cursor.execute(''' UPDATE tb_publicacao SET texto=? ''', (texto))
+
+        print("Publicação enviada com sucesso.")
+
+        conn.commit()
+        cursor.close()
+        conn.close()
 
     def enviarDM(self): #Envio de mensagem
-        
-        conn = sqlite3.connect('hello_if.db')
+
+        conn = mysql.connector.connect(**config)
         cursor = conn.cursor()
-        
+
         texto = str(input("Digite o texto para ser enviado: "))
         usuario = str(input("Digite o nome do destinatário da mensagem: "))
-        
-        cursor.execute('''
-            SELECT nome FROM tb_usuario
-            WHERE nome=?
-        ''', (usuario))
-        
+
+        cursor.execute('''SELECT nome FROM tb_usuario WHERE nome=? ''', (usuario))
+
         #Enviando mensagem...
-        cursor.execute('''
-           UPDATE tb_mensagem
-           SET texto=?
-        ''', (texto))
-        
+        cursor.execute(''' UPDATE tb_mensagem SET texto=? ''', (texto))
+
         print("Mensagem enviada com sucesso.")
-        
+
         conn.commit()
+        cursor.close()
         conn.close()
-        
+
     def desfazerAmizade(self):
-        
+
         opcao = int(input("Digite 1 para deletar amigo pelo id ou 2 para deletar o amigo pelo nome: "))
-        
+
         if (opcao == 1):
-            
+
             id_delt = int(input("Digite o id do seu amigo: "))
             Amigo.deletar(id_delt)
-        
+
         elif (opcao == 2):
 
             nome_amigo = str(input("Digite o nome do seu amigo que deseja desfazer amizade:"))
-    
-            conn = sqlite3.connect('hello_if.db')
+
+            conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
 
-            cursor.execute('''
-                    DELETE FROM tb_amigo
-                    WHERE nome =?
-                ''', (nome_amigo))
-            
+            cursor.execute('''DELETE FROM tb_amigo WHERE nome =? ''', (nome_amigo))
         else:
             print("Opção não existente.")
 
-            conn.commit()
-            conn.close()
+        conn.commit()
+        cursor.close()
+        conn.close()
 
     def fazerAmigo(self):
         Amigo.inserir()
 
     def comemorarTempoAmizade(self):
         pass
-
-    def __str__(self):
-        return "Usuario <%s>" %(self.nome)

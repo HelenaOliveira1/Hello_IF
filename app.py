@@ -2,11 +2,12 @@
     Menu principal da rede social
 '''
 
-import sqlite3
+import mysql
+from database.Config_DB import *
 from random import randint
 import datetime
 from Model.Usuario import Usuario
-from Model.Amigo import Amigo
+from database.AmigoDAO import *
 from database.RedeSocialDAO import RedeSocialDAO
 from Model.RedeSocial import RedeSocial
 
@@ -22,6 +23,8 @@ def exibirMenuPrincipal():
         "4 - Desfazer Amizade\n"
         "5 - Realizar Busca\n"
         "6 - Enviar Mensagem\n"
+        "7 - Postar publicação Pública"
+        "8 - Postar publicação Privada"
         "0 - Sair\n")
 
     try:
@@ -55,6 +58,9 @@ def main(Args = []):
 
     while(cont):
 
+        conn = mysql.connector.connect(**config)
+        cursor = conn.cursor()
+
         #Exibindo Menu de Opções
         op = exibirMenuPrincipal()
 
@@ -69,15 +75,25 @@ def main(Args = []):
 
                 id = randint(0,10000000)
                 login = input("Digite seu login: ")
+                if(len(login)> 50):
+                    print("Ops! Ocorreu um erro")
                 senha = input("Digite uma senha: ")
+                if (len(senha) > 25):
+                    print("Ops! Ocorreu um erro")
                 logado = False
                 nome = str(input("Digite seu nome: "))
+                if (len(nome) > 70):
+                    print("Ops! Ocorreu um erro")
                 dia = int(input("Digite dia de nascimento: "))
                 mes = int(input("Digite mes de nascimento: "))
                 ano = int(input("Digite ano de nascimento: "))
                 data_nasc = datetime.date(ano, mes, dia)
                 genero = str(input("Digite seu genero: "))
+                if (len(genero) > 10):
+                    print("Ops! Ocorreu um erro")
                 profissao = str(input("Digite sua profissao: "))
+                if (len(profissao) > 20):
+                    print("Ops! Ocorreu um erro")
                 usuario = Usuario(id, senha, login, logado, nome, data_nasc, genero, profissao)
 
                 cursor.execute('''
@@ -101,7 +117,7 @@ def main(Args = []):
                     WHERE nome LIKE nome=?
                     ''', (nome))
 
-                Amigo.inserir()
+                AmigoDAO.inserir()
 
                 # Salvando no Banco de Dados
                 conn.commit()
@@ -135,10 +151,25 @@ def main(Args = []):
             except:
                 print("Ocorreu um ERRO!...tente novamente mais tarde.")
 
+        elif (op == 7):
+            try:
+                Usuario.postPubPublica()
+
+            except:
+                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+
+        elif (op == 8):
+            try:
+                Usuario.postPubPrivada()
+
+            except:
+                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+
         #Saindo da Aplicação
         elif (op == 0):
             print("Saindo...")
             cont = False
+            cursor.close()
             conn.close()
 
         #Se a opção for inválida
