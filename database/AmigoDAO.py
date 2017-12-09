@@ -19,45 +19,56 @@ def inserir(self):
 
         conn.commit()
         id = cursor.lastrowid
-        cursor.close()
-        conn.close()
 
         return id
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
-
-    cursor.close()
-    conn.close()
+    
+    finally:
+        cursor.close()
+        conn.close()
 
 
 def listar(self):
-    amigos = []
+    
+    try:
+        amigos = []
 
-    conn = mysql.connector.connect(**config)
-    cursor = conn.cursor()
-    cursor.execute('''
-        SELECT * FROM tb_amigo;
-    ''')
-    for linha in cursor.fechall():
-        usuario = linha[1]
-        amigo = linha[2]
-        lista_amigo = Amigo(usuario, amigo)
-        amigos.append(lista_amigo)
-
-    cursor.close()
-    conn.close()
-
-    return amigos
+        conn = mysql.connector.connect(**config)
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT * FROM tb_amigo;
+        ''')
+        for linha in cursor.fechall():
+            usuario = linha[1]
+            amigo = linha[2]
+            lista_amigo = Amigo(usuario, amigo)
+            amigos.append(lista_amigo)
+        
+        return amigos
+            
+    except:
+        print("Ocorreu um ERRO!")
+    
+    finally:
+        cursor.close()
+        conn.close()
 
 def deletar(self, id_delt):
-    conn = mysql.conncetor.connect(**config)
-    cursor = conn.cursor()
-    cursor.execute('''
-        DELETE FROM tb_amigo
-        WHERE id =?
-        ''', id_delt)
-
-    conn.commit()
-    conn.close()
+    
+    try:
+        conn = mysql.conncetor.connect(**config)
+        cursor = conn.cursor()
+        cursor.execute('''
+            DELETE FROM tb_amigo
+            WHERE id =?
+            ''', id_delt)
+    except:
+        print("Ocorreu um ERRO!")
+        
+    finally:
+        conn.commit()
+        conn.close()
