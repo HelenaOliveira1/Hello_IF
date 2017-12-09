@@ -6,9 +6,6 @@ from Model.Usuario import *
 import mysql
 from database.Config_DB import *
 
-conn = mysql.connector.connect(**config)
-cursor = conn.cursor()
-
 class Amigo():
 
     def __init__(self, id, id_u, senha_u, login_u, logado_u, nome_u, data_nasc_u, genero_u, profissao_u, id_a, senha_a, login_a, logado_a, nome_a, data_nasc_a, genero_a, profissao_a):
