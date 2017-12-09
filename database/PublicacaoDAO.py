@@ -20,27 +20,34 @@ def inserir_dados_publicacao():
         conn.commit()
         print("Um registro inserido com sucesso.")
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
 
 def lendo_imprimindo_todas_publicacao():
-    cursor.execute("""
-    SELECT * FROM tb_publicacao;
-    """)
+    try:
+        cursor.execute("""
+        SELECT * FROM tb_publicacao;
+        """)
 
-    for linha in cursor.fetchall():
-        print(linha)
+        for linha in cursor.fetchall():
+            print(linha)
 
-    # Salvando...
-    conn.commit()
-    print("Lemos com sucesso.")
+        # Salvando...
+        conn.commit()
+        print("Lemos com sucesso.")
+        
+    except:
+        print("Ocorreu um ERRO!")
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
 
 def alterar_dados_publicacao():
     try:
@@ -56,12 +63,14 @@ def alterar_dados_publicacao():
         conn.commit()
         print("Registro alterado com sucesso.")
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
 
 def deletar_dados_publicacao():
     try:
@@ -75,9 +84,11 @@ def deletar_dados_publicacao():
         conn.commit()
         print("Registro deletado com sucesso.")
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
