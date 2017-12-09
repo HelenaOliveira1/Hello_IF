@@ -18,69 +18,81 @@ class Feed():
         self.mensagem = Mensagem(id_m, visibilidade, texto)
 
     def listar(self):
+        try:
 
-        publicacoes = []
+            publicacoes = []
 
-        conn = mysql.connector.connect(**config)
-        cursor = conn.cursor()
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
 
-        cursor.execute(''' SELECT * FROM tb_feed; ''')
+            cursor.execute(''' SELECT * FROM tb_feed; ''')
 
-        for linha in cursor.fechall():
-            usuario = linha[1]
-            mensagem = linha[2]
-            lista_feed = Feed(usuario, mensagem)
-            publicacoes.append(lista_feed)
-
-        cursor.close()
-        conn.close()
-
-        return publicacoes
+            for linha in cursor.fechall():
+                usuario = linha[1]
+                mensagem = linha[2]
+                lista_feed = Feed(usuario, mensagem)
+                publicacoes.append(lista_feed)
+            return publicacoes
+        except:
+            print("Ocorreu um ERRO!")
+        finally:
+            cursor.close()
+            conn.close()
 
     def inserir(self):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
 
-        conn = mysql.connector.connect(**config)
-        cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO tb_feed(id, id_usuario, visib_mens) VALUES (?,?,?)
+            ''', (self.id, self.usuario.id_u, self.mensagem.visibilidade))
 
-        cursor.execute('''
-            INSERT INTO tb_feed(id, id_usuario, visib_mens) VALUES (?,?,?)
-        ''', (self.id, self.usuario.id_u, self.mensagem.visibilidade))
-
-        conn.commit()
-        id = cursor.lastrowid
-        cursor.close()
-        conn.close()
-
-        return id
+            conn.commit()
+            id = cursor.lastrowid
+            return id
+        except:
+           print("Ocorreu um ERRO!")
+        finally:
+            cursor.close()
+            conn.close()
 
     def deletar(self, id_mensagem):
+        try:
 
-        conn = mysql.connector.connect(**config)
-        cursor = conn.cursor()
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
 
-        cursor.execute('''
-            DELETE FROM tb_feed
-            WHERE id =?
-            ''', id_mensagem)
+            cursor.execute('''
+                DELETE FROM tb_feed
+                WHERE id =?
+                ''', id_mensagem)
 
-        conn.commit()
-        cursor.close()
-        conn.close()
+            conn.commit()
+        except:
+           print("Ocorreu um ERRO!")
+        finally:
+            cursor.close()
+            conn.close()
 
     def atualizar(self, visib_mens):
+        try:
 
-        conn = mysql.connector.connect(**config)
-        cursor = conn.cursor()
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
 
-        cursor.execute('''
-            UPDATE tb_feed
-            SET visib_mens=?
-            WHERE visib_mens=?
-            ''', (visib_mens))
+            cursor.execute('''
+                UPDATE tb_feed
+                SET visib_mens=?
+                WHERE visib_mens=?
+                ''', (visib_mens))
 
-        conn.commit()
-        cursor.close()
-        conn.close()
+            conn.commit()
+        except:
+           print("Ocorreu um ERRO!")
+        finally:
+            cursor.close()
+            conn.close()
 
     def __str__(self):
         return "Feed <%i>" %(self.id)
