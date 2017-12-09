@@ -20,26 +20,33 @@ def inserir_dados_feed():
         conn.commit()
         print("Um registro inserido com sucesso.")
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
 
 def lendo_imprimindo_feed():
+    
+    try:
+        cursor.execute(""" SELECT * FROM tb_feed; """)
 
-    cursor.execute(""" SELECT * FROM tb_feed; """)
+        for linha in cursor.fetchall():
+            print(linha)
 
-    for linha in cursor.fetchall():
-        print(linha)
-
-    # Salvando...
-    conn.commit()
-    print("Lemos com sucesso.")
-
-    cursor.close()
-    conn.close()
+        # Salvando...
+        conn.commit()
+        print("Lemos com sucesso.")
+        
+    except:
+        print("Ocorreu um ERRO!")
+        
+    finally:
+        cursor.close()
+        conn.close()
 
 def alterar_dados_feed():
     try:
@@ -55,12 +62,14 @@ def alterar_dados_feed():
         conn.commit()
         print("Registro alterado com sucesso.")
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
 
 def deletar_dados_feed():
     try:
@@ -74,9 +83,11 @@ def deletar_dados_feed():
         conn.commit()
         print("Registro deletado com sucesso.")
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
