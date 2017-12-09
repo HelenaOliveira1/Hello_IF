@@ -10,8 +10,6 @@ import datetime
 conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
-cursor = conn.cursor()
-
 def inserir_dados_usuario():
     try:
         login = input("Digite seu login: ")
@@ -33,16 +31,17 @@ def inserir_dados_usuario():
         conn.commit()
         print("Um registro inserido com sucesso.")
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
 
-    conn.commit()
-    id = cursor.lastrowid
-    cursor.close()
-    conn.close()
-
-    return id
+    finally:
+        conn.commit()
+        id = cursor.lastrowid
+        cursor.close()
+        conn.close()
+        return id
 
 def inserir_lista_usuario():
 
@@ -56,35 +55,41 @@ def inserir_lista_usuario():
         print("Registros inseridos com sucesso.")
 
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
 
 def listar(self):
-    usuarios = []
+    try:
+        usuarios = []
 
-    conn = mysql.connector.connect(**config)
-    cursor = conn.cursor()
+        conn = mysql.connector.connect(**config)
+        cursor = conn.cursor()
 
-    cursor.execute('''SELECT * FROM tb_usuario; ''')
-    for linha in cursor.fechall():
-        senha = linha[1]
-        login = linha[2]
-        logado = linha[3]
-        nome = linha[4]
-        data_nasc = linha[5]
-        genero = linha[6]
-        profissao = linha[7]
-        usuario = Usuario(senha, login, logado, nome, data_nasc, genero, profissao)
-        usuarios.append(usuario)
+        cursor.execute('''SELECT * FROM tb_usuario; ''')
+        for linha in cursor.fechall():
+            senha = linha[1]
+            login = linha[2]
+            logado = linha[3]
+            nome = linha[4]
+            data_nasc = linha[5]
+            genero = linha[6]
+            profissao = linha[7]
+            usuario = Usuario(senha, login, logado, nome, data_nasc, genero, profissao)
+            usuarios.append(usuario)
+        return usuarios
 
-    cursor.close()
-    conn.close()
+    except:
+        print("Ocorreu um ERRO!")
 
-    return usuarios
+    finally:
+        cursor.close()
+        conn.close()
 
 def alterar_dados_usuario():
     try:
@@ -110,12 +115,14 @@ def alterar_dados_usuario():
         conn.commit()
         print("Registro alterado com sucesso.")
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
 
 def deletar_dados_usuario():
     try:
@@ -126,9 +133,11 @@ def deletar_dados_usuario():
         conn.commit()
         print("Registro deletado com sucesso.")
 
-    except mysql.Error:
+    except mysql.connector.Error as error:
+        print(error)
         print("Ocorreu um ERRO!")
         return False
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
