@@ -2,14 +2,13 @@
     Menu principal da rede social
 '''
 
-import mysql
-from database.Config_DB import *
-from random import randint
 import datetime
+from random import randint
 from Model.Usuario import Usuario
+from Model.RedeSocial import RedeSocial
 from database.AmigoDAO import *
 from database.RedeSocialDAO import RedeSocialDAO
-from Model.RedeSocial import RedeSocial
+from database.UsuarioDAO import UsuarioDAO
 
 '''
     Função para exibir o menu da Rede Social
@@ -46,7 +45,39 @@ def criarRedeSocial():
         RedeSocialDAO.criarRedeSocial(redeSocial)
     except:
         print("Ocorreu um ERRO!...tente novamente mais tarde.")
-        
+'''
+    Criação do Usuário
+'''
+def criarUsuario():
+
+    # Tratado os possiveis erros, se acontecer.
+    try:
+        login = input("Digite seu login: ")
+        if(len(login)> 50):
+            print("Ops! Ocorreu um erro")
+        senha = input("Digite uma senha: ")
+        if (len(senha) > 25):
+            print("Ops! Ocorreu um erro")
+        logado = False
+        nome = str(input("Digite seu nome: "))
+        if (len(nome) > 70):
+            print("Ops! Ocorreu um erro")
+        dia = int(input("Digite dia de nascimento: "))
+        mes = int(input("Digite mes de nascimento: "))
+        ano = int(input("Digite ano de nascimento: "))
+        data_nasc = datetime.date(ano, mes, dia)
+        genero = str(input("Digite seu genero: "))
+        if (len(genero) > 10):
+            print("Ops! Ocorreu um erro")
+        profissao = str(input("Digite sua profissao: "))
+        if (len(profissao) > 20):
+            print("Ops! Ocorreu um erro")
+        usuario = Usuario(senha, login, logado, nome, data_nasc, genero, profissao)
+        usuarioDAO = UsuarioDAO()
+        usuarioDAO.inserir(usuario)
+
+    except:
+        print("Ocorreu um ERRO!...tente novamente mais tarde.")
 '''
     Função Principal da rede
 '''
@@ -70,42 +101,7 @@ def main(Args = []):
 
         # Criação do Usuário
         elif (op == 2):
-            # Tratado os possiveis erros, se acontecer.
-            try:
-
-                id = randint(0,10000000)
-                login = input("Digite seu login: ")
-                if(len(login)> 50):
-                    print("Ops! Ocorreu um erro")
-                senha = input("Digite uma senha: ")
-                if (len(senha) > 25):
-                    print("Ops! Ocorreu um erro")
-                logado = False
-                nome = str(input("Digite seu nome: "))
-                if (len(nome) > 70):
-                    print("Ops! Ocorreu um erro")
-                dia = int(input("Digite dia de nascimento: "))
-                mes = int(input("Digite mes de nascimento: "))
-                ano = int(input("Digite ano de nascimento: "))
-                data_nasc = datetime.date(ano, mes, dia)
-                genero = str(input("Digite seu genero: "))
-                if (len(genero) > 10):
-                    print("Ops! Ocorreu um erro")
-                profissao = str(input("Digite sua profissao: "))
-                if (len(profissao) > 20):
-                    print("Ops! Ocorreu um erro")
-                usuario = Usuario(id, senha, login, logado, nome, data_nasc, genero, profissao)
-
-                cursor.execute('''
-                        INSERT INTO tb_usuario(senha, login, logado, nome, data_nasc, genero, profissao)
-                        VALUES (?,?,?,?,?,?,?)
-                                ''',(usuario.senha, usuario.login, usuario.logado, usuario.nome, usuario.data_nasc, usuario.genero, usuario.profissao))
-
-                conn.commit()
-                print("Criado com sucesso!")
-
-            except:
-                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+            criarUsuario()
 
         #Adicionar Amigo
         elif (op == 3):

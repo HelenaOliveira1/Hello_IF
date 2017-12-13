@@ -4,7 +4,7 @@
 
 from Model.Usuario import *
 import mysql
-from database.Config_DB import *
+from database.ConfigDB import *
 
 class Amigo():
 

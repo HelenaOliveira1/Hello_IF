@@ -2,18 +2,17 @@
     Usuario Orientado a Objeto
 """
 
-import mysql
+import mysql.connector
 from Model.Amigo import *
-from database.Config_DB import *
+from database.ConfigDB import *
 from Model.Pessoa import Pessoa
 
 conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
 class Usuario(Pessoa):
-    def __init__(self, id,senha, login, logado, nome, data_nasc, genero, profissao):
+    def __init__(self, senha, login, logado, nome, data_nasc, genero, profissao):
         super(Usuario, self).__init__(nome, genero)
-        self.id = id
         self.senha = senha
         self.login = login
         self.logado = logado

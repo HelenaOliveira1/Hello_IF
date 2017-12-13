@@ -1,91 +1,97 @@
 """
     DML da tabela chat
 """
-import mysql
-from database.Config_DB import *
+import mysql.connector
+from database.ConfigDB import *
 
-conn = mysql.connector.connect(**config)
-cursor = conn.cursor()
+class ChatDAO():
+    def inserir_dados_chat(self):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            visib_mens = str(input("Digite tipo da publicação: "))
 
-def inserir_dados_chat():
-    try:
-        visib_mens = str(input("Digite tipo da publicação: "))
+            cursor.execute("""INSERT INTO tb_chat (visib_mens) VALUES (?,?,?) """, (visib_mens))
 
-        cursor.execute("""INSERT INTO tb_chat (visib_mens) VALUES (?,?,?) """, (visib_mens))
+            # Salvando...
+            conn.commit()
+            print("Um registro inserido com sucesso.")
 
-        # Salvando...
-        conn.commit()
-        print("Um registro inserido com sucesso.")
+        except mysql.connector.Error as error:
+            print(error)
+            print("Ocorreu um ERRO!")
+            return False
 
-    except mysql.connector.Error as error:
-        print(error)
-        print("Ocorreu um ERRO!")
-        return False
-    
-    finally:
-        cursor.close()
-        conn.close()
+        finally:
+            cursor.close()
+            conn.close()
 
-def lendo_imprimindo_chat():   
-    try:
-        cursor.execute("""
-        SELECT * FROM tb_chat;
-        """)
+    def lendo_imprimindo_chat(self):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            cursor.execute("""
+            SELECT * FROM tb_chat;
+            """)
 
-        for linha in cursor.fetchall():
-            print(linha)
+            for linha in cursor.fetchall():
+                print(linha)
 
-        # Salvando...
-        conn.commit()
-        print("Lemos com sucesso.")
-        
-    except:
-        print("Ocorreu um ERRO!")
+            # Salvando...
+            conn.commit()
+            print("Lemos com sucesso.")
 
-    finally:
-        cursor.close()
-        conn.close()
+        except:
+            print("Ocorreu um ERRO!")
 
-def alterar_dados_chat():
-    try:
-        novo_tipo = str(input("Digite novo tipo da publicação: "))
+        finally:
+            cursor.close()
+            conn.close()
 
-        cursor.execute("""
-            UPDATE tb_mensagem
-            SET novo_tipo=?
-            WHERE visib_mens = ?
-            """, (novo_tipo))
+    def alterar_dados_chat(self):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            novo_tipo = str(input("Digite novo tipo da publicação: "))
 
-        # Salvando...
-        conn.commit()
-        print("Registro alterado com sucesso.")
+            cursor.execute("""
+                UPDATE tb_mensagem
+                SET novo_tipo=?
+                WHERE visib_mens = ?
+                """, (novo_tipo))
 
-    except mysql.connector.Error as error:
-        print(error)
-        print("Ocorreu um ERRO!")
-        return False
+            # Salvando...
+            conn.commit()
+            print("Registro alterado com sucesso.")
 
-    finally:
-        cursor.close()
-        conn.close()
+        except mysql.connector.Error as error:
+            print(error)
+            print("Ocorreu um ERRO!")
+            return False
 
-def deletar_dados_chat():
-    try:
-        tipo_publicacao = int(input("Digite o tipo da publicação para remover: "))
-        cursor.execute("""
-            DELETE FROM tb_publicacao
-            WHERE visib_mens = ?
-            """, (tipo_publicacao))
+        finally:
+            cursor.close()
+            conn.close()
 
-        # Salvando...
-        conn.commit()
-        print("Registro deletado com sucesso.")
+    def deletar_dados_chat(self):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            tipo_publicacao = int(input("Digite o tipo da publicação para remover: "))
+            cursor.execute("""
+                DELETE FROM tb_publicacao
+                WHERE visib_mens = ?
+                """, (tipo_publicacao))
 
-    except mysql.connector.Error as error:
-        print(error)
-        print("Ocorreu um ERRO!")
-        return False
-    
-    finally:
-        cursor.close()
-        conn.close()
+            # Salvando...
+            conn.commit()
+            print("Registro deletado com sucesso.")
+
+        except mysql.connector.Error as error:
+            print(error)
+            print("Ocorreu um ERRO!")
+            return False
+
+        finally:
+            cursor.close()
+            conn.close()
