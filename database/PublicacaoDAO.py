@@ -1,20 +1,23 @@
 """
-    DML da tabela publicacao
+    DML da tabela publicação
 """
 
-import mysql
-from database.Config_DB import *
+import mysql.connector
+from database.ConfigDB import *
 
-conn = mysql.connector.connect(**config)
-cursor = conn.cursor()
-
-def inserir_dados_publicacao():
+def inserir(self):
+    # Tratando os possiveis erros
     try:
-        tipo = str(input("Digite tipo da publicação: "))
+        # Conectando com o Banco e definindo o cursor
+        conn = mysql.connector.connect(**config)
+        cursor = conn.cursor()
 
+        tipo = str(input("Digite tipo da publicação: "))
+        
+        # Inserindo na tabela publicação
         cursor.execute("""
-        INSERT INTO tb_publicacao (tipo)
-        VALUES (?,?,?) """, (tipo))
+            INSERT INTO tb_publicacao (tipo)
+            VALUES (?,?,?) """, (tipo))
 
         # Salvando...
         conn.commit()
@@ -24,17 +27,18 @@ def inserir_dados_publicacao():
         print(error)
         print("Ocorreu um ERRO!")
         return False
-
+    # Finalizando as operações
     finally:
         cursor.close()
         conn.close()
 
-def lendo_imprimindo_todas_publicacao():
+def listar(self):
     try:
+        # Selecionando tudo da tabela publicação
         cursor.execute("""
         SELECT * FROM tb_publicacao;
         """)
-
+        # Imprimindo os resultados
         for linha in cursor.fetchall():
             print(linha)
 
@@ -49,15 +53,15 @@ def lendo_imprimindo_todas_publicacao():
         cursor.close()
         conn.close()
 
-def alterar_dados_publicacao():
+def alterar(self):
     try:
-        novo_tipo = str(input("Digite novo tipo da publicação: "))
-
+        novoTipo = str(input("Digite novo tipo da publicação: "))
+        # Alterando os dados da tabela Mensagem
         cursor.execute("""
             UPDATE tb_mensagem
-            SET novo_tipo=?
+            SET novoTipo=?
             WHERE tipo = ?
-            """, (novo_tipo))
+            """, (novoTipo))
 
         # Salvando...
         conn.commit()
@@ -72,13 +76,14 @@ def alterar_dados_publicacao():
         cursor.close()
         conn.close()
 
-def deletar_dados_publicacao():
+def deletar(self):
     try:
-        tipo_publicacao = int(input("Digite o tipo da publicação para remover: "))
+        tipoPublicacao = int(input("Digite o tipo da publicação para remover: "))
+        # Deletando os dados da tabela Publicação
         cursor.execute("""
             DELETE FROM tb_publicacao
             WHERE tipo = ?
-            """, (tipo_publicacao))
+            """, (tipoPublicacao))
 
         # Salvando...
         conn.commit()
