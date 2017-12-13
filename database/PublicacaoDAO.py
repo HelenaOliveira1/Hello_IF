@@ -15,7 +15,7 @@ class PublicacaoDAO():
 
             tipo = str(input("Digite tipo da publicação: "))
 
-            # Inserindo na tabela publicação
+            # Inserindo dados na tabela publicação
             cursor.execute("""
                 INSERT INTO tb_publicacao (tipo)
                 VALUES (?,?,?) """, (tipo))
@@ -35,6 +35,8 @@ class PublicacaoDAO():
 
     def listar(self):
         try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
             # Selecionando tudo da tabela publicação
             cursor.execute("""
             SELECT * FROM tb_publicacao;
@@ -56,6 +58,9 @@ class PublicacaoDAO():
 
     def alterar(self):
         try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+
             novoTipo = str(input("Digite novo tipo da publicação: "))
             # Alterando os dados da tabela Mensagem
             cursor.execute("""
@@ -79,6 +84,9 @@ class PublicacaoDAO():
 
     def deletar(self):
         try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+
             tipoPublicacao = int(input("Digite o tipo da publicação para remover: "))
             # Deletando os dados da tabela Publicação
             cursor.execute("""

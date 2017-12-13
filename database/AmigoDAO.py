@@ -21,9 +21,8 @@ class AmigoDAO():
             # Salvando...
             conn.commit()
             id = cursor.lastrowid
-
             return id
-        
+
         except mysql.connector.Error as error:
             print(error)
             print("Ocorreu um ERRO!")
@@ -38,6 +37,7 @@ class AmigoDAO():
         try:
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
+
             amigos = []
             
             # Selecionando tudo da tabela Amigo
@@ -49,8 +49,8 @@ class AmigoDAO():
             for linha in cursor.fechall():
                 usuario = linha[1]
                 amigo = linha[2]
-                lista_amigo = Amigo(usuario, amigo)
-                amigos.append(lista_amigo)
+                listaAmigo = Amigo(usuario, amigo)
+                amigos.append(listaAmigo)
 
             return amigos
 
@@ -63,7 +63,7 @@ class AmigoDAO():
 
     def deletar(self, id_delt):
         try:
-            conn = mysql.conncetor.connect(**config)
+            conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
             
             # Deletando através do id uma tupla da tabela Amigo

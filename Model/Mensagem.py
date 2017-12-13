@@ -2,8 +2,8 @@
     Mensagem Orientado a Objeto
 """
 
-import mysql
-from database.Config_DB import *
+import mysql.connector
+from database.ConfigDB import *
 
 conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
@@ -54,7 +54,7 @@ class Mensagem():
             return id
         except:
             print("Ocorreu um ERRO!")
-        finally;
+        finally:
             cursor.close()
             conn.close()
 

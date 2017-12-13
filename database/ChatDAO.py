@@ -4,6 +4,7 @@
 
 import mysql.connector
 from database.ConfigDB import *
+from Model.Chat import Chat
 
 class ChatDAO():
     def inserir(self):
@@ -13,23 +14,21 @@ class ChatDAO():
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
             
-            visib_mens = str(input("Digite tipo da publicação: "))
+            visibMens = str(input("Digite tipo da publicação: "))
             
             # Inserindo dados na tabela Chat
             cursor.execute("""
                 INSERT INTO tb_chat (visib_mens) 
-                VALUES (?,?,?) """, (visib_mens))
+                VALUES (?,?,?) """, (visibMens))
 
             # Salvando...
             conn.commit()
-            print("Um registro inserido com sucesso.")
+            id = cursor.lastrowid
+            return id
 
-        except mysql.connector.Error as error:
-            print(error)
+        except:
             print("Ocorreu um ERRO!")
-            return False
-
-        # Finalizando as operações
+        #Finalizando as operações
         finally:
             cursor.close()
             conn.close()
@@ -38,17 +37,25 @@ class ChatDAO():
         try:
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
+
+            mensagens = []
+
             # Selecionando tudo da tabela Chat 
             cursor.execute("""
             SELECT * FROM tb_chat;
             """)
             # Imprimindo o resultado
-            for linha in cursor.fetchall():
-                print(linha)
+            for linha in cursor.fechall():
+                usuario = linha[1]
+                amigo = linha[2]
+                mensagem = linha[3]
+                lista_mensagens = Chat(usuario, amigo, mensagem)
+                mensagens.append(lista_mensagens)
 
             # Salvando...
             conn.commit()
             print("Lemos com sucesso.")
+            return mensagens
 
         except:
             print("Ocorreu um ERRO!")

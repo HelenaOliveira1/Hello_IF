@@ -18,12 +18,16 @@ class UsuarioDAO():
             # Inserindo na tabela os dados do usuario
             cursor.execute("""
                 INSERT INTO tb_usuario (senha, login, logado, nome, data_nasc, genero, profissao)
-                VALUES (?,?,?,?,?,?,?) """, 
-                (usuario.senha, usuario.login, usuario.logado, usuario.nome, usuario.data_nasc, usuario.genero, usuario.profissao))
+                VALUES (?,?,?,?,?,?,?) """,
+               (usuario.senha, usuario.login, usuario.logado, usuario.nome, usuario.data_nasc, usuario.genero, usuario.profissao))
 
             # Salvando...
             conn.commit()
             print("Um registro inserido com sucesso.")
+
+            conn.commit()
+            id = cursor.lastrowid
+            return id
 
         except mysql.connector.Error as error:
             print(error)
@@ -31,13 +35,10 @@ class UsuarioDAO():
             return False
         # Finalizando as operações
         finally:
-            conn.commit()
-            id = cursor.lastrowid
             cursor.close()
             conn.close()
-            return id
 
-    def inserir(self):
+    def inserirLista(self):
         # Tratando os possiveis erros
         try:
             # Conectando com o Banco e definindo o cursor
@@ -45,7 +46,7 @@ class UsuarioDAO():
             cursor = conn.cursor()
             
             lista = input("Digite uma lista tipo:[()]: ")
-            # 
+            # Inserindo uma lista de usuários
             cursor.executemany("""INSERT INTO tb_usuario (senha, login, logado, nome, data_nasc, genero, profissao)
             VALUES (?,?,?,?,?,?,?) """, lista)
 
@@ -70,7 +71,7 @@ class UsuarioDAO():
             usuarios = []
             # selecionando tudo da tabela usuario 
             cursor.execute('''SELECT * FROM tb_usuario; ''')
-            # 
+            # Imprimindo os resultados
             for linha in cursor.fechall():
                 senha = linha[1]
                 login = linha[2]
@@ -81,6 +82,7 @@ class UsuarioDAO():
                 profissao = linha[7]
                 usuario = Usuario(senha, login, logado, nome, data_nasc, genero, profissao)
                 usuarios.append(usuario)
+
             return usuarios
 
         except:

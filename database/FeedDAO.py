@@ -13,11 +13,11 @@ class FeedDAO():
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
             
-            visib_mens = str(input("Digite tipo da publicação: "))
+            visibMens = str(input("Digite tipo da publicação: "))
             # Inserindo dados na tabela Feed
             cursor.execute("""
-            INSERT INTO tb_feed (visib_mens)
-            VALUES (?,?,?) """, (visib_mens))
+                INSERT INTO tb_feed (visib_mens)
+                VALUES (?,?,?) """, (visibMens))
 
             # Salvando...
             conn.commit()
@@ -37,6 +37,7 @@ class FeedDAO():
         try:
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
+
             # Selecionando tudo da tabela Feed
             cursor.execute(""" 
                 SELECT * FROM tb_feed; """)
@@ -57,7 +58,6 @@ class FeedDAO():
 
     def alterar(self):
         try:
-            
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
             
@@ -84,7 +84,6 @@ class FeedDAO():
 
     def deletar(self):
         try:
-            
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
             

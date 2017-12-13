@@ -3,16 +3,12 @@
 """
 
 
-from Model.Usuario import *
-import mysql
-from database.Config_DB import *
-from Model.Usuario import *
-from Model.Mensagem import *
-
-conn = mysql.connector.connect(**config)
-cursor = conn.cursor()
+from Model.Usuario import Usuario
+from Model.Mensagem import Mensagem
+from database.ChatDAO import ChatDAO
 
 class Chat():
+    #Inicializando o objeto Chat
     def __init__(self, id, id_u, senha_u, login_u, logado_u, nome_u, data_nasc_u, genero_u, profissao_u, id_a, senha_a,
                  login_a, logado_a, nome_a, data_nasc_a, genero_a, profissao_a, id_m, visibilidade, texto):
         self.id = id
@@ -20,65 +16,24 @@ class Chat():
         self.amigo = Usuario(id_a, senha_a, login_a, logado_a, nome_a, data_nasc_a, genero_a, profissao_a)
         self.mensagem = Mensagem(id_m, visibilidade, texto)
 
+    #Função para listar o Chat
     def listar(self):
-        try:
-            mensagens = []
-
-            conn = mysql.connector.connect(**config)
-            cursor = conn.cursor()
-
-            cursor.execute('''
-                SELECT * FROM tb_mensagem;
-            ''')
-            for linha in cursor.fechall():
-                usuario = linha[1]
-                amigo = linha[2]
-                mensagem = linha[3]
-                lista_mensagens = Chat(usuario, amigo, mensagem)
-                mensagens.append(lista_mensagens)
-
-            return mensagens
-        
-        except:
-            print("Ocorreu um ERRO!")
-            
-        finally:
-            cursor.close()
-            conn.close()
+        ChatDAO.listar()
 
     def inserir(self):
-        try:
+        ChatDAO.inserir()
 
-            conn = mysql.connector.connect(**config)
-            cursor = conn.cursor()
-            cursor.execute('''
-                INSERT INTO tb_mensagem(id, id_usuario, visib_mens, id_usuario_amigo) VALUES (?,?,?,?)
-            ''',(self.id, self.usuario.id_u, self.mensagem.visibilidade, self.amigo.id_a))
+    def deletar(self):
+        ChatDAO.deletar()
 
-            conn.commit()
-            id = cursor.lastrowid
-            return id
-        except:
-            print("Ocorreu um ERRO!")
-            
-        finally:
-            cursor.close()
-            conn.close()
+    def alterar(self):
+        ChatDAO.alterar()
 
-    def deletar(self, id_delt):
-        try:
-
-            conn = mysql.connector.connect(**config)
-            cursor = conn.cursor()
-
-            cursor.execute(''' DELETE FROM tb_chat WHERE id =? ''', id_delt)
-
-            conn.commit()
-        except:
-            print("Ocorreu um ERRO!")
-        finally:
-            cursor.close()
-            conn.close()
-
+    #Alterando o método __str__ de Chat
     def __str__(self):
         return "Chat <%i>" %(self.id)
+
+    #Alterando o método representativo de Chat
+    def __repr__(self):
+        return self.__str__()
+
