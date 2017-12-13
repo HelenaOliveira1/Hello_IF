@@ -2,95 +2,112 @@
     DML da tabela mensagem
 """
 
-import mysql
-from database.Config_DB import *
+import mysql.connector
+from database.ConfigDB import *
 
-conn = mysql.connector.connect(**config)
-cursor = conn.cursor()
+class MensagemDAO():
+    def inserir(self):
+        # Tratando os possiveis erros
+        try:
+            # Conectando com o Banco e definindo o cursor
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            
+            visibilidade = str(input("Digite visibilidade da mensagem: "))
+            texto = str(input("Digite todo texto: "))
+            assunto = str(input("Digite o assunto da mensagem: "))
+            
+            #Inserindo dados na tabela Mensagem
+            cursor.execute("""
+            INSERT INTO tb_mensagem (visibilidade, texto, assunto)
+            VALUES (?,?,?) """, (visibilidade, texto, assunto))
 
-def inserir_dados_mensagem():
-    try:
-        visibilidade = str(input("Digite visibilidade da mensagem: "))
-        texto = str(input("Digite todo texto: "))
-        assunto = str(input("Digite o assunto da mensagem: "))
+            # Salvando...
+            conn.commit()
+            print("Um registro inserido com sucesso.")
 
-        cursor.execute("""
-        INSERT INTO tb_mensagem (visibilidade, texto, assunto)
-        VALUES (?,?,?) """, (visibilidade, texto, assunto))
+        except mysql.connector.Error as error:
+            print(error)
+            print("Ocorreu um ERRO!")
+            return False
+        # Finalizando as operações
+        finally:
+            cursor.close()
+            conn.close()
 
-        # Salvando...
-        conn.commit()
-        print("Um registro inserido com sucesso.")
+    def listar(self):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            # Selecionando tudo da tabela Mensagem
+            cursor.execute(""" 
+                SELECT * FROM tb_mensagem; """)
 
-    except mysql.connector.Error as error:
-        print(error)
-        print("Ocorreu um ERRO!")
-        return False
-    
-    finally:
-        cursor.close()
-        conn.close()
+            #Imprimindo os resultados
+            for linha in cursor.fetchall():
+                print(linha)
 
-def lendo_imprimindo_todas_mensagens():
-    try:
-        cursor.execute(""" SELECT * FROM tb_mensagem; """)
+            # Salvando...
+            conn.commit()
+            print("Lemos com sucesso.")
 
-        for linha in cursor.fetchall():
-            print(linha)
+        except:
+            print("Ocorru um ERRO!")
 
-        # Salvando...
-        conn.commit()
-        print("Lemos com sucesso.")
-    
-    except:
-        print("Ocorru um ERRO!")
+        finally:
+            cursor.close()
+            conn.close()
 
-    finally:
-        cursor.close()
-        conn.close()
+    def alterar(self):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            
+            novoVisibilidade = str(input("Digite nova visibilidade da mensagem: "))
+            novoTexto = str(input("Digite novo texto: "))
+            novoAssunto = str(input("Digite novo assunto da mensagem: "))
+            #Alterando dados da tabela mensagem
+            cursor.execute("""
+                UPDATE tb_mensagem
+                SET novoVisibilidade=?, novoTexto=?, novoAssunto=?
+                WHERE login =?
+                """, (novoVisibilidade, novoTexto, novoAssunto))
 
-def alterar_dados_mensagem():
-    try:
-        novo_visibilidade = str(input("Digite nova visibilidade da mensagem: "))
-        novo_texto = str(input("Digite novo texto: "))
-        novo_assunto = str(input("Digite novo assunto da mensagem: "))
+            # Salvando...
+            conn.commit()
+            print("Registro alterado com sucesso.")
 
-        cursor.execute("""
-            UPDATE tb_mensagem
-            SET novo_visibilidade=?, novo_texto=?, novo_assunto=?
-            WHERE login = ?
-            """, (novo_visibilidade, novo_texto, novo_assunto))
+        except mysql.connector.Error as error:
+            print(error)
+            print("Ocorreu um ERRO!")
+            return False
 
-        # Salvando...
-        conn.commit()
-        print("Registro alterado com sucesso.")
+        finally:
+            cursor.close()
+            conn.close()
 
-    except mysql.connector.Error as error:
-        print(error)
-        print("Ocorreu um ERRO!")
-        return False
+    def deletar(self):
+        try:
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            
+            assuntoMensagem = int(input("Digite o assunto da mensagem para remover: "))
+            
+            cursor.execute("""
+                DELETE FROM tb_mensagem
+                SET assuntoMensagem =?
+                WHERE assunto =?
+                """, (assuntoMensagem))
 
-    finally:
-        cursor.close()
-        conn.close()
+            # Salvando...
+            conn.commit()
+            print("Registro deletado com sucesso.")
 
-def deletar_dados_mensagem():
-    try:
-        assunto_mensagem = int(input("Digite o assunto da mensagem para remover: "))
-        cursor.execute("""
-            DELETE FROM tb_mensagem
-            WHERE assunto = ?
-            """, (assunto_mensagem))
+        except mysql.connector.Error as error:
+            print(error)
+            print("Ocorreu um ERRO!")
+            return False
 
-        # Salvando...
-        conn.commit()
-        print("Registro deletado com sucesso.")
-
-    except mysql.connector.Error as error:
-        print(error)
-        print("Ocorreu um ERRO!")
-        return False
-    
-    finally:
-        cursor.close()
-        conn.close()
+        finally:
+            cursor.close()
+            conn.close()
