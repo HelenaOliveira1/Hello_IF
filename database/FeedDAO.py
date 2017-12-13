@@ -6,14 +6,17 @@ import mysql.connector
 from database.ConfigDB import *
 
 class FeedDAO():
-    def inserir_dados_feed(self):
+    def inserir(self):
+        # Tratando os possiveis erros
         try:
+            # Conectando com o Banco e definindo o cursor
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
+            
             visib_mens = str(input("Digite tipo da publicação: "))
-
+            # Inserindo dados na tabela Feed
             cursor.execute("""
-            INSERT INTO tb_publicacao (visib_mens)
+            INSERT INTO tb_feed (visib_mens)
             VALUES (?,?,?) """, (visib_mens))
 
             # Salvando...
@@ -24,24 +27,26 @@ class FeedDAO():
             print(error)
             print("Ocorreu um ERRO!")
             return False
-
+        
+        # Finalizando as operações
         finally:
             cursor.close()
             conn.close()
 
-    def lendo_imprimindo_feed(self):
-
+    def listar(self):
         try:
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
-            cursor.execute(""" SELECT * FROM tb_feed; """)
-
+            # Selecionando tudo da tabela Feed
+            cursor.execute(""" 
+                SELECT * FROM tb_feed; """)
+            # Imprimindo os resultados
             for linha in cursor.fetchall():
                 print(linha)
 
             # Salvando...
             conn.commit()
-            print("Lemos com sucesso.")
+            print("Listamos com sucesso.")
 
         except:
             print("Ocorreu um ERRO!")
@@ -50,18 +55,19 @@ class FeedDAO():
             cursor.close()
             conn.close()
 
-    def alterar_dados_feed(self):
-
+    def alterar(self):
         try:
+            
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
-            novo_tipo = str(input("Digite novo tipo da publicação: "))
-
+            
+            novoTipo = str(input("Digite novo tipo da publicação: "))
+            # Alterando dados da tabela Feed
             cursor.execute("""
                 UPDATE tb_feed
-                SET novo_tipo=?
+                SET novoTipo=?
                 WHERE visib_mens = ?
-                """, (novo_tipo))
+                """, (novoTipo))
 
             # Salvando...
             conn.commit()
@@ -76,15 +82,19 @@ class FeedDAO():
             cursor.close()
             conn.close()
 
-    def deletar_dados_feed(self):
+    def deletar(self):
         try:
+            
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
-            tipo_publicacao = int(input("Digite o tipo da publicação para remover: "))
+            
+            tipoPublicacao = int(input("Digite o tipo da publicação para remover: "))
+            # Deletando dados da tabela Feed
             cursor.execute("""
-                DELETE FROM tb_publicacao
+                DELETE FROM tb_feed
+                SET tipoPubicacao = ?
                 WHERE visib_mens = ?
-                """, (tipo_publicacao))
+                """, (tipoPublicacao))
 
             # Salvando...
             conn.commit()
