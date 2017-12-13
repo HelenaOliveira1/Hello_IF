@@ -1,17 +1,24 @@
 """
     DML da tabela chat
 """
+
 import mysql.connector
 from database.ConfigDB import *
 
 class ChatDAO():
-    def inserir_dados_chat(self):
+    def inserir(self):
+        # Tratando os possiveis erros
         try:
+            # Conectando com o Banco e definindo o cursor
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
+            
             visib_mens = str(input("Digite tipo da publicação: "))
-
-            cursor.execute("""INSERT INTO tb_chat (visib_mens) VALUES (?,?,?) """, (visib_mens))
+            
+            # Inserindo dados na tabela Chat
+            cursor.execute("""
+                INSERT INTO tb_chat (visib_mens) 
+                VALUES (?,?,?) """, (visib_mens))
 
             # Salvando...
             conn.commit()
@@ -22,18 +29,20 @@ class ChatDAO():
             print("Ocorreu um ERRO!")
             return False
 
+        # Finalizando as operações
         finally:
             cursor.close()
             conn.close()
 
-    def lendo_imprimindo_chat(self):
+    def listar(self):
         try:
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
+            # Selecionando tudo da tabela Chat 
             cursor.execute("""
             SELECT * FROM tb_chat;
             """)
-
+            # Imprimindo o resultado
             for linha in cursor.fetchall():
                 print(linha)
 
@@ -48,18 +57,20 @@ class ChatDAO():
             cursor.close()
             conn.close()
 
-    def alterar_dados_chat(self):
+    def alterar(self):
         try:
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
-            novo_tipo = str(input("Digite novo tipo da publicação: "))
-
+            
+            novoTipo = str(input("Digite novo tipo da publicação: "))
+            
+            # Atualizando dados da tabela Chat
             cursor.execute("""
-                UPDATE tb_mensagem
-                SET novo_tipo=?
+                UPDATE tb_chat
+                SET novoTipo=?
                 WHERE visib_mens = ?
-                """, (novo_tipo))
-
+                """, (novoTipo))
+                           
             # Salvando...
             conn.commit()
             print("Registro alterado com sucesso.")
@@ -73,15 +84,19 @@ class ChatDAO():
             cursor.close()
             conn.close()
 
-    def deletar_dados_chat(self):
+    def deletar(self):
         try:
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
-            tipo_publicacao = int(input("Digite o tipo da publicação para remover: "))
+            
+            tipoPublicacao = int(input("Digite o tipo da publicação para remover: "))
+            
+            # Deletando dados da tabela Chat 
             cursor.execute("""
-                DELETE FROM tb_publicacao
+                DELETE FROM tb_chat
+                SET tipoPublicacao = ?
                 WHERE visib_mens = ?
-                """, (tipo_publicacao))
+                """, (tipoPublicacao))
 
             # Salvando...
             conn.commit()
