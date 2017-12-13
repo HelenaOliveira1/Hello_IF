@@ -5,95 +5,96 @@
 import mysql.connector
 from database.ConfigDB import *
 
-def inserir(self):
-    # Tratando os possiveis erros
-    try:
-        # Conectando com o Banco e definindo o cursor
-        conn = mysql.connector.connect(**config)
-        cursor = conn.cursor()
+class PublicacaoDAO():
+    def inserir(self):
+        # Tratando os possiveis erros
+        try:
+            # Conectando com o Banco e definindo o cursor
+            conn = mysql.connector.connect(**config)
+            cursor = conn.cursor()
 
-        tipo = str(input("Digite tipo da publicação: "))
-        
-        # Inserindo na tabela publicação
-        cursor.execute("""
-            INSERT INTO tb_publicacao (tipo)
-            VALUES (?,?,?) """, (tipo))
+            tipo = str(input("Digite tipo da publicação: "))
 
-        # Salvando...
-        conn.commit()
-        print("Um registro inserido com sucesso.")
+            # Inserindo na tabela publicação
+            cursor.execute("""
+                INSERT INTO tb_publicacao (tipo)
+                VALUES (?,?,?) """, (tipo))
 
-    except mysql.connector.Error as error:
-        print(error)
-        print("Ocorreu um ERRO!")
-        return False
-    # Finalizando as operações
-    finally:
-        cursor.close()
-        conn.close()
+            # Salvando...
+            conn.commit()
+            print("Um registro inserido com sucesso.")
 
-def listar(self):
-    try:
-        # Selecionando tudo da tabela publicação
-        cursor.execute("""
-        SELECT * FROM tb_publicacao;
-        """)
-        # Imprimindo os resultados
-        for linha in cursor.fetchall():
-            print(linha)
+        except mysql.connector.Error as error:
+            print(error)
+            print("Ocorreu um ERRO!")
+            return False
+        # Finalizando as operações
+        finally:
+            cursor.close()
+            conn.close()
 
-        # Salvando...
-        conn.commit()
-        print("Lemos com sucesso.")
-        
-    except:
-        print("Ocorreu um ERRO!")
+    def listar(self):
+        try:
+            # Selecionando tudo da tabela publicação
+            cursor.execute("""
+            SELECT * FROM tb_publicacao;
+            """)
+            # Imprimindo os resultados
+            for linha in cursor.fetchall():
+                print(linha)
 
-    finally:
-        cursor.close()
-        conn.close()
+            # Salvando...
+            conn.commit()
+            print("Lemos com sucesso.")
 
-def alterar(self):
-    try:
-        novoTipo = str(input("Digite novo tipo da publicação: "))
-        # Alterando os dados da tabela Mensagem
-        cursor.execute("""
-            UPDATE tb_mensagem
-            SET novoTipo=?
-            WHERE tipo = ?
-            """, (novoTipo))
+        except:
+            print("Ocorreu um ERRO!")
 
-        # Salvando...
-        conn.commit()
-        print("Registro alterado com sucesso.")
+        finally:
+            cursor.close()
+            conn.close()
 
-    except mysql.connector.Error as error:
-        print(error)
-        print("Ocorreu um ERRO!")
-        return False
+    def alterar(self):
+        try:
+            novoTipo = str(input("Digite novo tipo da publicação: "))
+            # Alterando os dados da tabela Mensagem
+            cursor.execute("""
+                UPDATE tb_mensagem
+                SET novoTipo=?
+                WHERE tipo = ?
+                """, (novoTipo))
 
-    finally:
-        cursor.close()
-        conn.close()
+            # Salvando...
+            conn.commit()
+            print("Registro alterado com sucesso.")
 
-def deletar(self):
-    try:
-        tipoPublicacao = int(input("Digite o tipo da publicação para remover: "))
-        # Deletando os dados da tabela Publicação
-        cursor.execute("""
-            DELETE FROM tb_publicacao
-            WHERE tipo = ?
-            """, (tipoPublicacao))
+        except mysql.connector.Error as error:
+            print(error)
+            print("Ocorreu um ERRO!")
+            return False
 
-        # Salvando...
-        conn.commit()
-        print("Registro deletado com sucesso.")
+        finally:
+            cursor.close()
+            conn.close()
 
-    except mysql.connector.Error as error:
-        print(error)
-        print("Ocorreu um ERRO!")
-        return False
+    def deletar(self):
+        try:
+            tipoPublicacao = int(input("Digite o tipo da publicação para remover: "))
+            # Deletando os dados da tabela Publicação
+            cursor.execute("""
+                DELETE FROM tb_publicacao
+                WHERE tipo = ?
+                """, (tipoPublicacao))
 
-    finally:
-        cursor.close()
-        conn.close()
+            # Salvando...
+            conn.commit()
+            print("Registro deletado com sucesso.")
+
+        except mysql.connector.Error as error:
+            print(error)
+            print("Ocorreu um ERRO!")
+            return False
+
+        finally:
+            cursor.close()
+            conn.close()
