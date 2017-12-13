@@ -1,5 +1,5 @@
 """
-    Criação das tabelas de Hello_IF
+    Criação das tabelas da Rede Social
 """
 
 import mysql.connector
