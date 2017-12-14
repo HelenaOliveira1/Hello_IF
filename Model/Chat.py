@@ -8,9 +8,8 @@ from database.ChatDAO import ChatDAO
 
 class Chat():
     #Inicializando o objeto Chat
-    def __init__(self, id, senha_u, login_u, logado_u, nome_u, data_nasc_u, genero_u, profissao_u, senha_a,
+    def __init__(self, senha_u, login_u, logado_u, nome_u, data_nasc_u, genero_u, profissao_u, senha_a,
                  login_a, logado_a, nome_a, data_nasc_a, genero_a, profissao_a, visibilidade, texto):
-        self.id = id
         self.usuario = Usuario(senha_u, login_u, logado_u, nome_u, data_nasc_u, genero_u, profissao_u)
         self.amigo = Usuario(senha_a, login_a, logado_a, nome_a, data_nasc_a, genero_a, profissao_a)
         self.mensagem = Mensagem(visibilidade, texto)
