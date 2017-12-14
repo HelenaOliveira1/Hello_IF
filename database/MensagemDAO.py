@@ -25,6 +25,9 @@ class MensagemDAO():
             # Salvando...
             conn.commit()
             print("Um registro inserido com sucesso.")
+            id = cursor.lastrowid
+
+            return id
 
         except mysql.connector.Error as error:
             print(error)
@@ -39,13 +42,20 @@ class MensagemDAO():
         try:
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
+
+            mensagens = []
             # Selecionando tudo da tabela Mensagem
             cursor.execute(""" 
                 SELECT * FROM tb_mensagem; """)
 
             #Imprimindo os resultados
-            for linha in cursor.fetchall():
-                print(linha)
+            for linha in cursor.fechall():
+                visibilidade = linha[1]
+                texto = linha[2]
+                mensagem = Mensagem(visibilidade, texto)
+                mensagens.append(mensagem)
+
+            return mensagens
 
             # Salvando...
             conn.commit()
