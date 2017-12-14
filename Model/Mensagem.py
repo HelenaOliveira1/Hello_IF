@@ -2,75 +2,30 @@
     Mensagem Orientado a Objeto
 """
 
-import mysql.connector
-from database.ConfigDB import *
-
-conn = mysql.connector.connect(**config)
-cursor = conn.cursor()
+from database.MensagemDAO import MensagemDAO
 
 class Mensagem():
 
-    def __init__(self, id, visibilidade, texto):
-        self.id = id
+    def __init__(self, visibilidade, texto):
         self.visibilidade = visibilidade
         self.texto = texto
 
     def listar(self):
-        try:
-            mensagens = []
-
-            conn = mysql.connector.connect(**config)
-            cursor = conn.cursor()
-
-            cursor.execute('''
-                SELECT * FROM tb_mensagem;
-            ''')
-            for linha in cursor.fechall():
-                visibilidade = linha[1]
-                texto = linha[2]
-                mensagem = Mensagem(visibilidade, texto)
-                mensagens.append(mensagem)
-            
-            return mensagens
-        except:
-           print("Ocorreu um ERRO!")
-        finally:
-            cursor.close()
-            conn.close()
+        MensagemDAO.listar()
 
     def inserir(self):
-        try:
-
-            conn = mysql.connector.connect(**config)
-            cursor = conn.cursor()
-
-            cursor.execute('''
-                INSERT INTO tb_mensagem(visibilidade, texto) VALUES (?,?)
-            ''', (self.visibilidade, self.texto))
-
-            conn.commit()
-            id = cursor.lastrowid
-            
-            return id
-        except:
-            print("Ocorreu um ERRO!")
-        finally:
-            cursor.close()
-            conn.close()
-
-    def deletar(self, id_mens):
-        try:
-
-            conn = mysql.connector.connect(**config)
-            cursor = conn.cursor()
-            cursor.execute(''' DELETE FROM tb_mensagem WHERE id =? ''', id_mens)
-
-            conn.commit()
-        except:
-            print("Ocorreu um ERRO!")
-        finally:
-            cursor.close()
-            conn.close()
-
+        MensagemDAO.inserir()
+        
+    def deletar(self):
+        MensagemDAO.deletar()
+    
+    def atualizar(self):
+        MensagemDAO.alterar()
+        
+    #Alterando o método __str__ de Mensagem
     def __str__(self):
         return "Mensagem <%i>" %(self.id)
+    
+    #Alterando o método representativo de Mensagem
+    def __repr__(self):
+        return self.__str__()
