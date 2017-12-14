@@ -2,70 +2,28 @@
     Publicação Orientado a Objeto
 """
 
-import mysql
-from database.Config_DB import *
-
-conn = mysql.connector.connect(**config)
-cursor = conn.cursor()
+from database.PublicacaoDAO import PublicacaoDAO
 
 class Publicacao():
-    def __init__(self, id, tipo):
-        self.id = id
+    def __init__(self, tipo):
         self.tipo = tipo
 
     def listar(self):
-        try:
-            publicacoes = []
-
-            conn = mysql.connector.connect(**config)
-            cursor = conn.cursor()
-
-            cursor.execute('''
-                SELECT * FROM tb_publicacao;
-            ''')
-            for linha in cursor.fechall():
-                tipo = linha[1]
-                publicacao = Publicacao(tipo)
-                publicacoes.append(publicacao)
-            return publicacoes
-        except:
-            print("Ocorreu um ERRO!")
-        finally:
-            cursor.close()
-            conn.close()
+        PublicacaoDAO.listar()
 
     def inserir(self):
-        try:
+        PublicacaoDAO.inserir()
 
-            conn = mysql.connector.connect(**config)
-            cursor = conn.cursor()
+    def deletar(self):
+        PublicacaoDAO.deletar()
 
-            cursor.execute(''' INSERT INTO tb_publicacao(tipo) VALUES (?) ''', self.tipo)
+    def atualizar(self):
+        PublicacaoDAO.alterar()
 
-            conn.commit()
-            id = cursor.lastrowid
-            
-            return id
-        except:
-            print("Ocorreu um ERRO!")
-        finally:
-            cursor.close()
-            conn.close()
-
-    def deletar(self, id_mens):
-        try:
-
-            conn = mysql.connector.connect(**config)
-            cursor = conn.cursor()
-
-            cursor.execute(''' DELETE FROM tb_publicacao WHERE id =? ''', (id_mens))
-
-            conn.commit()
-        except:
-            print("Ocorreu um ERRO!")
-        finally:
-            cursor.close()
-            conn.close()
-
+    #Alterando o método __str__ de Publicação
     def __str__(self):
         return "Publicação <%i>" %(self.id)
+
+    #Alterando o método representativo de Amigo
+    def __repr__(self):
+        return self.__str__()

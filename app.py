@@ -3,10 +3,9 @@
 '''
 
 import datetime
-from random import randint
 from Model.Usuario import Usuario
 from Model.RedeSocial import RedeSocial
-from database.AmigoDAO import *
+from database.ConfigDB import *
 from database.RedeSocialDAO import RedeSocialDAO
 from database.UsuarioDAO import UsuarioDAO
 
@@ -22,8 +21,8 @@ def exibirMenuPrincipal():
         "4 - Desfazer Amizade\n"
         "5 - Realizar Busca\n"
         "6 - Enviar Mensagem\n"
-        "7 - Postar publicação Pública"
-        "8 - Postar publicação Privada"
+        "7 - Postar publicação Pública\n"
+        "8 - Postar publicação Privada\n"
         "0 - Sair\n")
 
     try:
@@ -105,61 +104,27 @@ def main(Args = []):
 
         #Adicionar Amigo
         elif (op == 3):
-            try:
-                nome = input("Digite nome do amigo: ")
-
-                cursor.execute('''
-                    SELECT * FROM tb_amigo
-                    WHERE nome LIKE nome=?
-                    ''', (nome))
-
-                AmigoDAO.inserir()
-
-                # Salvando no Banco de Dados
-                conn.commit()
-                print("Amigo adicionado com sucesso!")
-
-            except:
-                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+            Usuario.fazerAmizade()
 
         #Desfazer Amizade
         elif(op == 4):
-            try:
-                Usuario.desfazerAmizade()
-
-            except:
-                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+            Usuario.desfazerAmizade()
 
         #Realizar Busca no Banco
         elif (op == 5):
-            try:
-                nome = str(input("Digite o nome do amigo: "))
-                Usuario.realizarBusca(nome)
-
-            except:
-                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+            Usuario.realizarBusca()
 
         #Enviando Mensagem Privada
         elif (op == 6):
-            try:
-                Usuario.enviarDM()
+            Usuario.enviarDM()
 
-            except:
-                print("Ocorreu um ERRO!...tente novamente mais tarde.")
-
+        # Posta publicação pública
         elif (op == 7):
-            try:
-                Usuario.postPubPublica()
+            Usuario.postPubPublica()
 
-            except:
-                print("Ocorreu um ERRO!...tente novamente mais tarde.")
-
+        # Posta publicação privada
         elif (op == 8):
-            try:
-                Usuario.postPubPrivada()
-
-            except:
-                print("Ocorreu um ERRO!...tente novamente mais tarde.")
+            Usuario.postPubPrivada()
 
         #Saindo da Aplicação
         elif (op == 0):

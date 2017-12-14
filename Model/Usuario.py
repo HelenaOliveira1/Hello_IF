@@ -14,7 +14,6 @@ class Usuario(Pessoa):
         self.logado = logado
 
     def realizarBusca(self):
-        
         nome = str(input("Digite o nome do seu amigo: "))
         UsuarioDAO.realizarBusca(nome)
         

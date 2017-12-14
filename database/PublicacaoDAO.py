@@ -23,6 +23,9 @@ class PublicacaoDAO():
             # Salvando...
             conn.commit()
             print("Um registro inserido com sucesso.")
+            id = cursor.lastrowid
+
+            return id
 
         except mysql.connector.Error as error:
             print(error)
@@ -37,13 +40,19 @@ class PublicacaoDAO():
         try:
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
+
+            publicacoes = []
+
             # Selecionando tudo da tabela publicação
             cursor.execute("""
             SELECT * FROM tb_publicacao;
             """)
             # Imprimindo os resultados
-            for linha in cursor.fetchall():
-                print(linha)
+            for linha in cursor.fechall():
+                tipo = linha[1]
+                publicacao = Publicacao(tipo)
+                publicacoes.append(publicacao)
+            return publicacoes
 
             # Salvando...
             conn.commit()
