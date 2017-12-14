@@ -22,6 +22,8 @@ class FeedDAO():
             # Salvando...
             conn.commit()
             print("Um registro inserido com sucesso.")
+            id = cursor.lastrowid
+            return id
 
         except mysql.connector.Error as error:
             print(error)
@@ -38,13 +40,18 @@ class FeedDAO():
             conn = mysql.connector.connect(**config)
             cursor = conn.cursor()
 
+            publicacoes = []
+
             # Selecionando tudo da tabela Feed
             cursor.execute(""" 
                 SELECT * FROM tb_feed; """)
             # Imprimindo os resultados
-            for linha in cursor.fetchall():
-                print(linha)
-
+            for linha in cursor.fechall():
+                usuario = linha[1]
+                mensagem = linha[2]
+                lista_feed = Feed(usuario, mensagem)
+                publicacoes.append(lista_feed)
+            return publicacoes
             # Salvando...
             conn.commit()
             print("Listamos com sucesso.")
