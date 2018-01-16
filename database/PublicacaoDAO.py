@@ -4,6 +4,7 @@
 
 import mysql.connector
 from database.ConfigDB import *
+from Model.Publicacao import Publicacao
 
 class PublicacaoDAO():
     def inserir(self):
@@ -52,7 +53,6 @@ class PublicacaoDAO():
                 tipo = linha[1]
                 publicacao = Publicacao(tipo)
                 publicacoes.append(publicacao)
-            return publicacoes
 
             # Salvando...
             conn.commit()
@@ -64,6 +64,7 @@ class PublicacaoDAO():
         finally:
             cursor.close()
             conn.close()
+            return publicacoes
 
     def alterar(self):
         try:

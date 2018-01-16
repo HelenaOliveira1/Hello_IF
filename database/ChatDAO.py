@@ -42,8 +42,8 @@ class ChatDAO():
 
             # Selecionando tudo da tabela Chat 
             cursor.execute("""
-            SELECT * FROM tb_chat;
-            """)
+            SELECT * FROM tb_chat; """)
+            
             # Imprimindo o resultado
             for linha in cursor.fechall():
                 usuario = linha[1]
@@ -55,7 +55,6 @@ class ChatDAO():
             # Salvando...
             conn.commit()
             print("Lemos com sucesso.")
-            return mensagens
 
         except:
             print("Ocorreu um ERRO!")
@@ -63,6 +62,7 @@ class ChatDAO():
         finally:
             cursor.close()
             conn.close()
+            return mensagens
 
     def alterar(self):
         try:

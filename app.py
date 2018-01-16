@@ -42,6 +42,7 @@ def criarRedeSocial():
         redeSocial = RedeSocial(nome)
     
         RedeSocialDAO.criarRedeSocial(redeSocial)
+
     except:
         print("Ocorreu um ERRO!...tente novamente mais tarde.")
 '''
@@ -53,30 +54,32 @@ def criarUsuario():
     try:
         login = input("Digite seu login: ")
         if(len(login)> 50):
-            print("Ops! Ocorreu um erro")
+            print("Ops! A quantidade de dígitos é maior que a esperada!")
         senha = input("Digite uma senha: ")
         if (len(senha) > 25):
-            print("Ops! Ocorreu um erro")
+            print("Ops! A quantidade de dígitos é maior que a esperada!")
         logado = False
         nome = str(input("Digite seu nome: "))
         if (len(nome) > 70):
-            print("Ops! Ocorreu um erro")
+            print("Ops! A quantidade de dígitos é maior que a esperada!")
         dia = int(input("Digite dia de nascimento: "))
         mes = int(input("Digite mes de nascimento: "))
         ano = int(input("Digite ano de nascimento: "))
         data_nasc = datetime.date(ano, mes, dia)
         genero = str(input("Digite seu genero: "))
         if (len(genero) > 10):
-            print("Ops! Ocorreu um erro")
+            print("Ops!  A quantidade de dígitos é maior que a esperada!")
         profissao = str(input("Digite sua profissao: "))
         if (len(profissao) > 20):
-            print("Ops! Ocorreu um erro")
+            print("Ops! A quantidade de dígitos é maior que a esperada!")
+
         usuario = Usuario(senha, login, logado, nome, data_nasc, genero, profissao)
         usuarioDAO = UsuarioDAO()
         usuarioDAO.inserir(usuario)
+        print("Usuário Criado!")
 
     except:
-        print("Ocorreu um ERRO!...tente novamente mais tarde.")
+        print("Ocorreu um ERRO!\n Tente novamente mais tarde.")
 '''
     Função Principal da rede
 '''

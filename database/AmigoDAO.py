@@ -52,14 +52,13 @@ class AmigoDAO():
                 listaAmigo = Amigo(usuario, amigo)
                 amigos.append(listaAmigo)
 
-            return amigos
-
         except:
             print("Ocorreu um ERRO!")
 
         finally:
             cursor.close()
             conn.close()
+            return amigos
 
     def deletar(self, id_delt):
         try:

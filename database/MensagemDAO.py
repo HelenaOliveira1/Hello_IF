@@ -26,7 +26,6 @@ class MensagemDAO():
             conn.commit()
             print("Um registro inserido com sucesso.")
             id = cursor.lastrowid
-
             return id
 
         except mysql.connector.Error as error:
@@ -55,8 +54,6 @@ class MensagemDAO():
                 mensagem = Mensagem(visibilidade, texto)
                 mensagens.append(mensagem)
 
-            return mensagens
-
             # Salvando...
             conn.commit()
             print("Lemos com sucesso.")
@@ -67,6 +64,7 @@ class MensagemDAO():
         finally:
             cursor.close()
             conn.close()
+            return mensagens
 
     def alterar(self):
         try:

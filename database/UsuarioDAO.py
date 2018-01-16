@@ -59,6 +59,7 @@ class UsuarioDAO():
             print(error)
             print("Ocorreu um ERRO!")
             return False
+
         # Finalizando as operações
         finally:
             cursor.close()
@@ -84,14 +85,13 @@ class UsuarioDAO():
                 usuario = Usuario(senha, login, logado, nome, data_nasc, genero, profissao)
                 usuarios.append(usuario)
 
-            return usuarios
-
         except:
             print("Ocorreu um ERRO!")
 
         finally:
             cursor.close()
             conn.close()
+            return usuarios
 
     def alterar(self):
         try:
@@ -168,6 +168,7 @@ class UsuarioDAO():
 
         except:
             print("Ocorreu um ERRO!")
+
         finally:
             cursor.close()
             conn.close()
@@ -217,6 +218,7 @@ class UsuarioDAO():
 
         except:
             print("Ocorreu um ERRO!")
+
         finally:
             cursor.close()
             conn.close()

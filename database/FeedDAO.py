@@ -51,7 +51,7 @@ class FeedDAO():
                 mensagem = linha[2]
                 lista_feed = Feed(usuario, mensagem)
                 publicacoes.append(lista_feed)
-            return publicacoes
+
             # Salvando...
             conn.commit()
             print("Listamos com sucesso.")
@@ -62,6 +62,7 @@ class FeedDAO():
         finally:
             cursor.close()
             conn.close()
+            return publicacoes
 
     def alterar(self):
         try:

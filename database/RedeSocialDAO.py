@@ -7,7 +7,7 @@ from database.Tabelas import RedeSocial
 
 class RedeSocialDAO():
     #Função para criar a rede social
-    def criarRedeSocial(redesocial: RedeSocial):
+    def criarRedeSocial(redesocial):
         # Tratado os possiveis erros, se acontecer.
         try:
             # Conectando com o Banco e definindo o cursor
